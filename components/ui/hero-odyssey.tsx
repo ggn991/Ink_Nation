@@ -1,73 +1,6 @@
-import React, { useState,useRef,useEffect } from 'react';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, Variants, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
-
-interface ElasticHueSliderProps {
-  value: number;
-  onChange: (value: number) => void;
-  min?: number;
-  max?: number;
-  step?: number;
-  label?: string;
-}
-
-const ElasticHueSlider: React.FC<ElasticHueSliderProps> = ({
-  value,
-  onChange,
-  min = 0,
-  max = 360,
-  step = 1,
-  label = 'Adjust Hue',
-}) => {
-  const [isDragging, setIsDragging] = useState(false);
-  const sliderRef = useRef<HTMLDivElement>(null);
-  const progress = ((value - min) / (max - min));
-  const thumbPosition = progress * 100;
-  const handleMouseDown = () => setIsDragging(true);
-  const handleMouseUp = () => setIsDragging(false);
-  return (
-    <div className="scale-50 relative w-full max-w-xs flex flex-col items-center" ref={sliderRef}>
-      {label && <label htmlFor="hue-slider-native" className="text-gray-300 text-sm mb-1">{label}</label>}
-      <div className="relative w-full h-5 flex items-center">
-        <input
-          id="hue-slider-native"
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onTouchStart={handleMouseDown}
-          onTouchEnd={handleMouseUp}
-          className="absolute inset-0 w-full h-full appearance-none bg-transparent cursor-pointer z-20"
-          style={{ WebkitAppearance: 'none' }}
-        />
-        <div className="absolute left-0 w-full h-1 bg-gray-700 rounded-full z-0"></div>
-        <div className="absolute left-0 h-1 bg-blue-500 rounded-full z-10" style={{ width: `${thumbPosition}%` }}></div>
-        <motion.div
-          className="absolute top-1/2 transform -translate-y-1/2 z-30"
-          style={{ left: `${thumbPosition}%` }}
-          animate={{ scale: isDragging ? 1.2 : 1 }}
-          transition={{ type: "spring", stiffness: 500, damping: isDragging ? 20 : 30 }}
-        />
-      </div>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={value}
-          initial={{ opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 5 }}
-          transition={{ duration: 0.2 }}
-          className="text-xs text-gray-500 mt-2"
-        >
-          {value}°
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  );
-};
 
 interface FeatureItemProps {
   name: string;
@@ -176,7 +109,7 @@ const Lightning: React.FC<LightningProps> = ({
     gl.attachShader(program, fragmentShader);
     gl.linkProgram(program);
     gl.useProgram(program);
-    const vertices = new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]);
+    const vertices = new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]);
     const vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
@@ -228,7 +161,36 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ name, value, position }) => (
 
 export const HeroSection: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [lightningHue, setLightningHue] = useState(310);
+  const [lightningHue, setLightningHue] = useState(230);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLightningHue((prev) => (prev + 90) % 360);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Mouse tracking for tattoo machine tilting
+  const mouseX = useMotionValue(0);
+  const springConfig = { stiffness: 50, damping: 25 };
+  const smoothMouseX = useSpring(mouseX, springConfig);
+
+  // Tilt angle based on mouse X position relative to screen center
+  const tiltRotation = useTransform(smoothMouseX, (x: number) => {
+    if (typeof window === 'undefined') return 0;
+    const center = window.innerWidth / 2;
+    const offset = (x - center) / (window.innerWidth / 2);
+    // Tilt up to 35 degrees
+    return offset * 35;
+  });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX]);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -238,8 +200,6 @@ export const HeroSection: React.FC = () => {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } }
   };
-
-
 
   return (
     <div className="relative w-full bg-black text-white overflow-hidden">
@@ -280,7 +240,7 @@ export const HeroSection: React.FC = () => {
               <button className="absolute top-6 right-6 p-2" onClick={() => setMobileMenuOpen(false)}>
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
-              {['Studio','Artists','Gallery','Pricing','Contact'].map(item => (
+              {['Studio', 'Artists', 'Gallery', 'Pricing', 'Contact'].map(item => (
                 <button key={item} className="px-6 py-3">{item}</button>
               ))}
               <button className="px-6 py-3 bg-gray-800/80 backdrop-blur-sm rounded-full">Book a Session</button>
@@ -289,7 +249,7 @@ export const HeroSection: React.FC = () => {
         )}
 
         <motion.div variants={containerVariants} initial="hidden" animate="visible"
-          className="w-full z-200 top-[30%] relative">
+          className="w-full z-[200] top-[30%] relative">
           <motion.div variants={itemVariants}><FeatureItem name="React" value="for base" position="left-0 sm:left-10 top-40" /></motion.div>
           <motion.div variants={itemVariants}><FeatureItem name="GSAP" value="for scroll" position="left-1/4 top-24" /></motion.div>
           <motion.div variants={itemVariants}><FeatureItem name="WebGL" value="for lightning" position="right-1/4 top-24" /></motion.div>
@@ -298,7 +258,7 @@ export const HeroSection: React.FC = () => {
 
         <motion.div variants={containerVariants} initial="hidden" animate="visible"
           className="relative z-30 flex flex-col items-center text-center max-w-4xl mx-auto">
-          <ElasticHueSlider value={lightningHue} onChange={setLightningHue} label="Tune the Vibe" />
+
 
           <motion.button variants={itemVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
             className="flex items-center space-x-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-full text-sm mb-6 transition-all duration-300 group">
@@ -319,13 +279,13 @@ export const HeroSection: React.FC = () => {
             Premium tattoo studio in Bangalore. Book your consultation and wear your story forever.
           </motion.p>
           <motion.button variants={itemVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-            className="mt-[100px] sm:mt-[100px] px-8 py-3 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors">
+            className="mt-[100px] sm:mt-[100px] px-8 py-3 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors relative z-40">
             Explore Our Work
           </motion.button>
         </motion.div>
       </div>
 
-      {/* Background */}
+      {/* Background & Tattoo Machine */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}
         className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-black/80"></div>
@@ -333,7 +293,29 @@ export const HeroSection: React.FC = () => {
         <div className="absolute top-0 w-[100%] left-1/2 transform -translate-x-1/2 h-full">
           <Lightning hue={lightningHue} xOffset={0} speed={1.6} intensity={0.6} size={2} />
         </div>
+
+        {/* The Globe Backdrop */}
         <div className="z-10 absolute top-[55%] left-1/2 transform -translate-x-1/2 w-[600px] h-[600px] backdrop-blur-3xl rounded-full bg-[radial-gradient(circle_at_25%_90%,_#2d1b4e_15%,_#000000de_70%,_#000000ed_100%)]"></div>
+
+        {/* Floating Tattoo Machine - Perfectly contained in globe */}
+        <motion.div
+          style={{
+            rotate: tiltRotation,
+            transformOrigin: "bottom center",
+          }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1, duration: 1.5, ease: "easeOut" }}
+          className="absolute top-[65%] left-1/2 -ml-[150px] z-[15] w-[300px] h-[300px] flex items-center justify-center pointer-events-none mix-blend-screen pb-6"
+
+
+        >
+          <img
+            src="/tattoo-machine-new.png"
+            alt="Premium Rotary Tattoo Machine"
+            className="w-full h-full object-contain filter brightness-110 drop-shadow-[0_0_30px_rgba(139,92,246,0.3)] rotate-90"
+          />
+        </motion.div>
       </motion.div>
     </div>
   );
