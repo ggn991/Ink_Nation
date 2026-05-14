@@ -48,7 +48,7 @@ const Lightning: React.FC<LightningProps> = ({
       uniform float uSpeed;
       uniform float uIntensity;
       uniform float uSize;
-      #define OCTAVE_COUNT 10
+      #define OCTAVE_COUNT 4
       vec3 hsv2rgb(vec3 c) {
           vec3 rgb = clamp(abs(mod(c.x * 6.0 + vec3(0.0,4.0,2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
           return c.z * mix(vec3(1.0), rgb, c.y);
@@ -124,8 +124,8 @@ const Lightning: React.FC<LightningProps> = ({
     const uIntensityLocation = gl.getUniformLocation(program, "uIntensity");
     const uSizeLocation = gl.getUniformLocation(program, "uSize");
     const startTime = performance.now();
+    let animationFrameId: number;
     const render = () => {
-      resizeCanvas();
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.uniform2f(iResolutionLocation, canvas.width, canvas.height);
       gl.uniform1f(iTimeLocation, (performance.now() - startTime) / 1000.0);
@@ -135,10 +135,18 @@ const Lightning: React.FC<LightningProps> = ({
       gl.uniform1f(uIntensityLocation, intensity);
       gl.uniform1f(uSizeLocation, size);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-      requestAnimationFrame(render);
+      animationFrameId = requestAnimationFrame(render);
     };
-    requestAnimationFrame(render);
-    return () => { window.removeEventListener("resize", resizeCanvas); };
+    animationFrameId = requestAnimationFrame(render);
+
+    return () => { 
+      window.removeEventListener("resize", resizeCanvas);
+      cancelAnimationFrame(animationFrameId);
+      gl.deleteProgram(program);
+      gl.deleteShader(vertexShader);
+      gl.deleteShader(fragmentShader);
+      gl.deleteBuffer(vertexBuffer);
+    };
   }, [hue, xOffset, speed, intensity, size]);
   return <canvas ref={canvasRef} className="w-full h-full relative" />;
 };

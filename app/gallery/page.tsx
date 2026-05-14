@@ -112,7 +112,6 @@ export default function GalleryPage() {
       rotateX: rotateX,
       rotateY: rotateY,
       scale: 1.15,
-      filter: "grayscale(0%)",
       duration: 0.8,
       ease: "power3.out"
     });
@@ -128,7 +127,6 @@ export default function GalleryPage() {
       rotateX: 0,
       rotateY: 0,
       scale: 1,
-      filter: "grayscale(100%)",
       duration: 1.5,
       ease: "elastic.out(1, 0.3)"
     });
@@ -164,7 +162,7 @@ export default function GalleryPage() {
               <img 
                 src={item.src} 
                 alt={item.artist}
-                className="gallery-img block absolute top-1/2 left-1/2 w-full h-[160%] object-cover object-center grayscale pointer-events-none"
+                className="gallery-img block absolute top-1/2 left-1/2 w-full h-[160%] object-cover object-center pointer-events-none"
               />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 flex flex-col justify-end p-10 translate-y-6 group-hover:translate-y-0 pointer-events-none transition-all duration-500">
