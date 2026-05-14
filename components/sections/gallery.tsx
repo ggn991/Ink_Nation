@@ -1,162 +1,72 @@
 "use client";
 
-import React, { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import React from "react";
+import { InfiniteScrollingGallery } from "@/components/ui/infinite-scrolling-gallery";
 import Link from "next/link";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+const col1 = [
+  { src: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop", artist: "Karan Singh", style: "Neo-Traditional" },
+  { src: "https://images.unsplash.com/photo-1560707303-4e980ce876ad?q=80&w=800&auto=format&fit=crop", artist: "Priya Rao", style: "Realism" },
+  { src: "https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?q=80&w=800&auto=format&fit=crop", artist: "Alex Black", style: "Minimalism" },
+  { src: "https://images.unsplash.com/photo-1590246814883-57831168e243?q=80&w=800&auto=format&fit=crop", artist: "Rahul Varma", style: "Irezumi" },
+];
 
-const previewImages = [
-  { id: 1, src: "/gallery/t1.png", artist: "Karan Singh", style: "Neo-Traditional" },
-  { id: 2, src: "/gallery/t2.png", artist: "Priya Rao", style: "Realism" },
-  { id: 3, src: "/gallery/t3.png", artist: "Alex Black", style: "Minimalism" },
-  { id: 4, src: "/gallery/t4.png", artist: "Rahul Varma", style: "Irezumi" },
-  { id: 5, src: "/gallery/t5.png", artist: "Sneha Kapoor", style: "Biomechanical" },
-  { id: 6, src: "/gallery/t6.png", artist: "Vikram Das", style: "Watercolor" },
+const col2 = [
+  { src: "https://images.unsplash.com/photo-1598448663023-ed35ae5541f1?q=80&w=800&auto=format&fit=crop", artist: "Sneha Kapoor", style: "Biomechanical" },
+  { src: "https://images.unsplash.com/photo-1562962230-16e4623d36e6?q=80&w=800&auto=format&fit=crop", artist: "Vikram Das", style: "Watercolor" },
+  { src: "https://images.unsplash.com/photo-1597405490028-2823d4b45a5a?q=80&w=800&auto=format&fit=crop", artist: "Zoya Khan", style: "Blackwork" },
+  { src: "https://images.unsplash.com/photo-1605648916361-9bc12ad6a569?q=80&w=800&auto=format&fit=crop", artist: "Aria Moon", style: "Floral" },
+];
+
+const col3 = [
+  { src: "https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?q=80&w=800&auto=format&fit=crop", artist: "Leo Wolf", style: "Sketch" },
+  { src: "https://images.unsplash.com/photo-1612459284970-e8f027596582?q=80&w=800&auto=format&fit=crop", artist: "Maya Sun", style: "Ornamental" },
+  { src: "https://images.unsplash.com/photo-1621252179027-94459d278660?q=80&w=800&auto=format&fit=crop", artist: "Ivan Drago", style: "Portrait" },
+  { src: "https://images.unsplash.com/photo-1590246814883-57831168e243?q=80&w=800&auto=format&fit=crop", artist: "Sasha Gray", style: "Linework" },
 ];
 
 export const GallerySection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      // 0. Base Centering (Critical for GSAP transform merging)
-      gsap.set(".gallery-img", { xPercent: -50, yPercent: -50 });
-
-      // 1. Entrance reveal with clip-path
-      gsap.utils.toArray(".gallery-preview-item").forEach((item: any) => {
-        const img = item.querySelector(".gallery-img");
-        
-        gsap.fromTo(item, 
-          { clipPath: "inset(100% 0% 0% 0%)" },
-          { 
-            clipPath: "inset(0% 0% 0% 0%)",
-            duration: 1.5,
-            ease: "expo.out",
-            scrollTrigger: {
-              trigger: item,
-              start: "top 90%",
-            }
-          }
-        );
-
-        gsap.fromTo(img,
-          { y: 30, scale: 1.2 },
-          { 
-            y: 0, 
-            scale: 1,
-            duration: 1.8,
-            ease: "expo.out",
-            scrollTrigger: {
-              trigger: item,
-              start: "top 90%",
-            }
-          }
-        );
-      });
-
-      // 2. Parallax (Balanced move around the -50% center)
-      gsap.utils.toArray(".gallery-img").forEach((img: any) => {
-        gsap.fromTo(img, 
-          { yPercent: -60 },
-          {
-            yPercent: -40,
-            ease: "none",
-            scrollTrigger: {
-              trigger: img.parentElement,
-              scrub: true,
-              start: "top bottom",
-              end: "bottom top"
-            }
-          }
-        );
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const item = e.currentTarget;
-    const img = item.querySelector(".gallery-img") as HTMLImageElement;
-    const rect = item.getBoundingClientRect();
-    
-    const x = (e.clientX - rect.left - rect.width / 2) * 0.15;
-    const y = (e.clientY - rect.top - rect.height / 2) * 0.15;
-    const rX = (e.clientY - rect.top - rect.height / 2) * -0.06;
-    const rY = (e.clientX - rect.left - rect.width / 2) * 0.06;
-
-    gsap.to(img, {
-      x: x,
-      y: y,
-      rotateX: rX,
-      rotateY: rY,
-      scale: 1.15,
-      filter: "grayscale(0%)",
-      duration: 0.8,
-      ease: "power3.out"
-    });
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    const item = e.currentTarget;
-    const img = item.querySelector(".gallery-img") as HTMLImageElement;
-    
-    gsap.to(img, {
-      x: 0,
-      y: 0,
-      rotateX: 0,
-      rotateY: 0,
-      scale: 1,
-      filter: "grayscale(100%)",
-      duration: 1.5,
-      ease: "elastic.out(1, 0.3)"
-    });
-  };
-
   return (
-    <section ref={sectionRef} className="bg-black py-0 overflow-hidden">
-      <div className="py-24 px-6 text-center">
-        <h2 className="text-4xl md:text-7xl font-light tracking-[0.2em] uppercase text-white mb-4">
-          The Portfolio
+    <section className="bg-black py-24 overflow-hidden relative min-h-screen">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent pointer-events-none" />
+      
+      <div className="container mx-auto px-6 mb-20 text-center relative z-10">
+        <h2 className="text-4xl md:text-8xl font-light tracking-[0.2em] uppercase text-white mb-6">
+          The Wall
         </h2>
-        <p className="text-gray-500 tracking-[0.4em] uppercase text-sm">Craftsmanship in every drop</p>
+        <div className="w-24 h-px bg-cyan-500/50 mx-auto mb-6" />
+        <p className="text-gray-500 tracking-[0.4em] uppercase text-sm max-w-2xl mx-auto leading-relaxed">
+          Infinite stories told through ink and soul. A living, breathing portfolio of our finest masterpieces.
+        </p>
       </div>
 
-      <div className="gallery-preview-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-y border-white/10 bg-black leading-[0]">
-        {previewImages.map((item) => (
-          <div 
-            key={item.id} 
-            className="gallery-preview-item group relative overflow-hidden aspect-[3/4] bg-black"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{ perspective: "1000px" }}
-          >
-            <div className="gallery-img-container absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
-              <img 
-                src={item.src} 
-                alt={item.artist}
-                className="gallery-img block absolute top-1/2 left-1/2 w-full h-[160%] object-cover object-center grayscale pointer-events-none"
-              />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 flex flex-col justify-end p-10 translate-y-6 group-hover:translate-y-0 pointer-events-none transition-all duration-500">
-              <span className="text-cyan-400 text-xs tracking-widest uppercase mb-3 block font-medium">{item.style}</span>
-              <h3 className="text-white text-3xl font-light tracking-tight mb-2">{item.artist}</h3>
-              <p className="text-gray-500 text-sm tracking-wide opacity-0 group-hover:opacity-100 transition-all duration-700 delay-100">View Masterpiece Details</p>
-            </div>
-          </div>
-        ))}
+      <div className="flex flex-row gap-4 h-[800px] px-4 md:px-10">
+        <InfiniteScrollingGallery 
+          items={col1} 
+          direction="down" 
+          speed="normal" 
+          className="flex-1"
+        />
+        <InfiniteScrollingGallery 
+          items={col2} 
+          direction="up" 
+          speed="slow" 
+          className="flex-1 hidden md:block"
+        />
+        <InfiniteScrollingGallery 
+          items={col3} 
+          direction="down" 
+          speed="fast" 
+          className="flex-1 hidden lg:block"
+        />
       </div>
 
-      <div className="py-20 text-center">
+      <div className="py-20 text-center relative z-10">
         <Link href="/gallery" className="inline-block group relative">
-          <span className="relative z-10 px-10 py-4 border border-white/20 text-white text-sm tracking-[0.3em] uppercase transition-all duration-500 group-hover:bg-white group-hover:text-black">
+          <span className="relative z-10 px-12 py-5 border border-white/10 text-white text-xs tracking-[0.4em] uppercase transition-all duration-700 group-hover:border-cyan-500/50 group-hover:bg-white group-hover:text-black font-medium">
             Explore All Masterpieces
           </span>
-          <div className="absolute -inset-2 bg-white/5 scale-0 group-hover:scale-100 transition-transform duration-500 rounded-full blur-xl" />
+          <div className="absolute -inset-4 bg-cyan-500/10 scale-0 group-hover:scale-100 transition-transform duration-1000 rounded-full blur-3xl opacity-0 group-hover:opacity-100" />
         </Link>
       </div>
     </section>
