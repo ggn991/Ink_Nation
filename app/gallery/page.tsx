@@ -3,13 +3,13 @@
 import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
+import { Footer } from "@/components/layout/footer";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const previewImages = [
+const galleryData = [
   { id: 1, src: "/gallery/t1.png", artist: "Karan Singh", style: "Neo-Traditional" },
   { id: 2, src: "/gallery/t2.png", artist: "Priya Rao", style: "Realism" },
   { id: 3, src: "/gallery/t3.png", artist: "Alex Black", style: "Minimalism" },
@@ -18,47 +18,48 @@ const previewImages = [
   { id: 6, src: "/gallery/t6.png", artist: "Vikram Das", style: "Watercolor" },
 ];
 
-export const GallerySection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+export default function GalleryPage() {
+  const mainRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // 0. Base Centering (Critical for GSAP transform merging)
       gsap.set(".gallery-img", { xPercent: -50, yPercent: -50 });
 
-      // 1. Entrance reveal with clip-path
-      gsap.utils.toArray(".gallery-preview-item").forEach((item: any) => {
-        const img = item.querySelector(".gallery-img");
+      // 1. Surgical Reveal Animation (Clip Path Mask + Vertical Slide)
+      gsap.utils.toArray(".gallery-grid-item").forEach((item: any) => {
+        const container = item.querySelector(".gallery-img-container");
+        const innerImg = item.querySelector(".gallery-img");
         
-        gsap.fromTo(item, 
+        gsap.fromTo(container, 
           { clipPath: "inset(100% 0% 0% 0%)" },
           { 
             clipPath: "inset(0% 0% 0% 0%)",
-            duration: 1.5,
+            duration: 1.6,
             ease: "expo.out",
             scrollTrigger: {
               trigger: item,
-              start: "top 90%",
+              start: "top 85%",
             }
           }
         );
 
-        gsap.fromTo(img,
-          { y: 30, scale: 1.2 },
+        gsap.fromTo(innerImg,
+          { y: 30, scale: 1.15 },
           { 
             y: 0, 
             scale: 1,
-            duration: 1.8,
+            duration: 2,
             ease: "expo.out",
             scrollTrigger: {
               trigger: item,
-              start: "top 90%",
+              start: "top 85%",
             }
           }
         );
       });
 
-      // 2. Parallax (Balanced move around the -50% center)
+      // 2. Ongoing Scroll Parallax (Balanced move around the -50% center)
       gsap.utils.toArray(".gallery-img").forEach((img: any) => {
         gsap.fromTo(img, 
           { yPercent: -60 },
@@ -74,26 +75,42 @@ export const GallerySection = () => {
           }
         );
       });
-    }, sectionRef);
+
+      // 3. Header Split Reveal
+      gsap.from(".gallery-title span", {
+        y: 120,
+        opacity: 0,
+        rotateX: -45,
+        stagger: 0.15,
+        duration: 1.8,
+        ease: "expo.out"
+      });
+    }, mainRef);
 
     return () => ctx.revert();
   }, []);
 
+  // 4. Ultra-Smooth Magnetic 3D Mouse-Follow Logic
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const item = e.currentTarget;
     const img = item.querySelector(".gallery-img") as HTMLImageElement;
     const rect = item.getBoundingClientRect();
     
-    const x = (e.clientX - rect.left - rect.width / 2) * 0.15;
-    const y = (e.clientY - rect.top - rect.height / 2) * 0.15;
-    const rX = (e.clientY - rect.top - rect.height / 2) * -0.06;
-    const rY = (e.clientX - rect.left - rect.width / 2) * 0.06;
-
+    // Calculate relative mouse position
+    const relX = e.clientX - rect.left - rect.width / 2;
+    const relY = e.clientY - rect.top - rect.height / 2;
+    
+    // Movement and Tilt factors
+    const x = relX * 0.15;
+    const y = relY * 0.15;
+    const rotateX = relY * -0.06;
+    const rotateY = relX * 0.06;
+    
     gsap.to(img, {
       x: x,
       y: y,
-      rotateX: rX,
-      rotateY: rY,
+      rotateX: rotateX,
+      rotateY: rotateY,
       scale: 1.15,
       filter: "grayscale(0%)",
       duration: 0.8,
@@ -118,19 +135,27 @@ export const GallerySection = () => {
   };
 
   return (
-    <section ref={sectionRef} className="bg-black py-0 overflow-hidden">
-      <div className="py-24 px-6 text-center">
-        <h2 className="text-4xl md:text-7xl font-light tracking-[0.2em] uppercase text-white mb-4">
-          The Portfolio
-        </h2>
-        <p className="text-gray-500 tracking-[0.4em] uppercase text-sm">Craftsmanship in every drop</p>
+    <main ref={mainRef} className="bg-black pt-48 min-h-screen">
+      <div className="max-w-7xl mx-auto px-6 mb-32">
+        <h1 className="gallery-title text-7xl md:text-[10rem] font-light tracking-tighter text-white flex flex-col leading-[0.9]">
+          <div className="overflow-hidden h-fit">
+            <span className="inline-block">MASTERPIECE</span>
+          </div>
+          <div className="overflow-hidden h-fit">
+            <span className="inline-block text-gray-500 italic ml-12 md:ml-32">GALLERY</span>
+          </div>
+        </h1>
+        <p className="mt-12 max-w-2xl text-gray-400 text-lg md:text-xl font-light leading-relaxed border-l border-white/20 pl-8">
+          A surgical collaboration of skin and ink. Each creation is a permanent testament 
+          to precision, artistry, and the human story.
+        </p>
       </div>
 
-      <div className="gallery-preview-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-y border-white/10 bg-black leading-[0]">
-        {previewImages.map((item) => (
+      <div className="gallery-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-white/10 bg-black leading-[0]">
+        {galleryData.map((item) => (
           <div 
             key={item.id} 
-            className="gallery-preview-item group relative overflow-hidden aspect-[3/4] bg-black"
+            className="gallery-grid-item group relative overflow-hidden aspect-[3/4] bg-black"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={{ perspective: "1000px" }}
@@ -151,14 +176,15 @@ export const GallerySection = () => {
         ))}
       </div>
 
-      <div className="py-20 text-center">
-        <Link href="/gallery" className="inline-block group relative">
-          <span className="relative z-10 px-10 py-4 border border-white/20 text-white text-sm tracking-[0.3em] uppercase transition-all duration-500 group-hover:bg-white group-hover:text-black">
-            Explore All Masterpieces
-          </span>
-          <div className="absolute -inset-2 bg-white/5 scale-0 group-hover:scale-100 transition-transform duration-500 rounded-full blur-xl" />
-        </Link>
+      <div className="py-60 text-center bg-zinc-950 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(34,211,238,0.05)_0%,_transparent_70%)]" />
+        <h2 className="text-5xl md:text-8xl text-white font-light tracking-tighter mb-16 relative z-10">INK YOUR LEGACY.</h2>
+        <button className="group relative px-16 py-6 bg-white text-black font-semibold tracking-widest uppercase overflow-hidden transition-all duration-500 hover:bg-cyan-400 hover:scale-105 active:scale-95 z-10">
+          <span className="relative z-10">Book Consultation</span>
+        </button>
       </div>
-    </section>
+
+      <Footer />
+    </main>
   );
-};
+}
