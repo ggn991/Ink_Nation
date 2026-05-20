@@ -7,6 +7,7 @@ import { GallerySection } from "@/components/sections/gallery";
 import { WhySection } from "@/components/sections/why";
 import { PricingSection } from "@/components/sections/pricing";
 import { ContactSection } from "@/components/sections/contact";
+import { ReviewMarquee, InstagramGrid, CanvasBanner } from "@/components/sections/extras";
 import { Footer } from "@/components/layout/footer";
 
 export default function Home() {
@@ -17,7 +18,10 @@ export default function Home() {
       <ArtistsSection />
       <GallerySection />
       <WhySection />
+      <ReviewMarquee />
       <PricingSection />
+      <CanvasBanner />
+      <InstagramGrid />
       <ContactSection />
       <Footer />
     </main>

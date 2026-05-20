@@ -3,6 +3,7 @@
 import React, { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Link from "next/link";
 import { Footer } from "@/components/layout/footer";
 
 if (typeof window !== "undefined") {
@@ -169,9 +170,11 @@ export default function PiercingsGalleryPage() {
       <div className="py-60 text-center bg-zinc-950 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.03)_0%,_transparent_70%)]" />
         <h2 className="text-5xl md:text-8xl text-white font-light tracking-tighter mb-16 relative z-10">CURATE YOUR LOOK.</h2>
-        <button className="group relative px-16 py-6 bg-white text-black font-semibold tracking-widest uppercase overflow-hidden transition-all duration-500 hover:bg-zinc-200 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] cursor-pointer active:scale-95 z-10">
-          <span className="relative z-10">Book Consultation</span>
-        </button>
+        <Link href="/booking" className="relative z-10 inline-block">
+          <button className="group px-16 py-6 bg-white text-black font-semibold tracking-widest uppercase rounded-full border border-white transition-all duration-500 hover:bg-[#00f0ff] hover:border-[#00f0ff] hover:text-black hover:scale-105 hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] cursor-pointer active:scale-95">
+            Book Consultation
+          </button>
+        </Link>
       </div>
 
       <Footer />
