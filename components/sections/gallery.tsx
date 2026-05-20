@@ -181,8 +181,8 @@ export const GallerySection = () => {
                     <span>{copied ? "Link Copied!" : "Share"}</span>
                   </button>
                   <Link href="/booking" onClick={() => setSelectedItem(null)}>
-                    <button className="bg-white text-black px-6 py-3 rounded-full font-semibold uppercase tracking-widest text-[10px] hover:bg-[#00f0ff] hover:text-black hover:border-[#00f0ff] transition-all duration-300 cursor-pointer border border-white">
-                      Book Similar
+                    <button className="bg-white text-black px-6 py-3 rounded-full font-extrabold uppercase tracking-widest text-[10px] hover:bg-[#00f0ff] hover:text-black hover:border-[#00f0ff] transition-all duration-300 cursor-pointer border border-white">
+                      GET INKED
                     </button>
                   </Link>
                 </div>

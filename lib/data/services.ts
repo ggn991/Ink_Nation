@@ -20,7 +20,7 @@ export const services: Service[] = [
     description: "Every piece we create is custom-designed, engineered for your unique anatomy and story. From micro-minimalism to full bodysuit masterpieces, our artists deliver elite results in Chicano script, realism, traditional Japanese, American traditional, and vivid color watercolor.",
     isAvailable: true,
     isComingSoon: false,
-    ctaText: "Book Custom Session",
+    ctaText: "GET INKED",
     icon: "Brush",
     priceStart: "₹2,000",
     details: [
@@ -44,7 +44,7 @@ export const services: Service[] = [
     description: "Experience professional body modifications performed in absolute sterile environments. We utilize ultra-sharp, single-use surgical needles and stock only the highest grade biocompatible titanium and solid gold jewelry to ensure safe, comfortable healing.",
     isAvailable: true,
     isComingSoon: false,
-    ctaText: "Book Piercing Slot",
+    ctaText: "GET INKED",
     icon: "Sparkles",
     priceStart: "₹800",
     details: [
@@ -96,7 +96,7 @@ export const services: Service[] = [
     description: "Launch your career in tattooing. Ink Nation's exclusive academy offers intensive 3-month and 6-month hands-on programs covering fundamental illustration, machine mechanics, skin physiology, sterile prep, and actual client execution under master supervision.",
     isAvailable: true,
     isComingSoon: false,
-    ctaText: "Apply to Academy",
+    ctaText: "GET INKED",
     icon: "GraduationCap",
     priceStart: "₹75,000",
     details: [

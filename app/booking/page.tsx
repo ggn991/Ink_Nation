@@ -153,7 +153,7 @@ export default function BookingPage() {
           <div className="text-center mb-12">
             <h4 className="text-cyan-400 uppercase tracking-[0.3em] text-xs font-semibold mb-3">Consultation Setup</h4>
             <h1 className="text-4xl md:text-6xl font-light tracking-widest uppercase mb-4">
-              Book A <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-100 to-zinc-400">Session</span>
+              GET <span className="font-extrabold text-[#00f0ff] drop-shadow-[0_0_15px_rgba(0,240,255,0.2)]">INKED</span>
             </h1>
             <p className="text-gray-400 font-light text-sm max-w-md mx-auto">
               Our master custom-practitioners work strictly by appointment. Map out your next visual statement.

@@ -6,11 +6,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const coreRoutes = [
     "",
     "/gallery",
-    "/gallery/bangalore",
-    "/gallery/mysore",
     "/gallery/tattoos",
     "/gallery/piercings",
     "/gallery/nail-art",
+    "/gallery/removal",
     "/services",
     "/artists",
     "/about",

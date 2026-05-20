@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import Link from "next/link";
 import { DollarSign, Check, HelpCircle, ArrowRight } from "lucide-react";
 import { BreadcrumbSchema } from "@/lib/seo/json-ld";
+import { Button } from "@/components/ui/Button";
 
 export default function PricingPage() {
   const [activeBranch, setActiveBranch] = useState<"bangalore" | "mysore">("bangalore");
@@ -203,10 +204,13 @@ export default function PricingPage() {
               No two pieces of skin art are the same. Complex wrapping, detailed shadows, and custom designs require individual estimations. Book your entirely free layout consultation to lock in an exact price quote with our masters.
             </p>
             <Link href="/booking">
-              <button className="bg-white text-black px-8 py-4 rounded-full font-semibold uppercase tracking-widest text-xs hover:bg-cyan-400 hover:text-black transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer inline-flex items-center gap-2 border border-white hover:border-cyan-400">
-                <span>Book Free Consultation</span>
+              <Button 
+                variant="primary"
+                className="gap-2 px-10 py-4"
+              >
+                <span>GET INKED</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Button>
             </Link>
           </motion.div>
         </section>

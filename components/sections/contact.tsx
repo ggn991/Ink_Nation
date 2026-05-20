@@ -309,9 +309,9 @@ export const ContactSection = () => {
               {/* Consistent rounded-full consultation button */}
               <button
                 type="submit"
-                className="w-full bg-white text-black py-4 rounded-full font-semibold uppercase tracking-widest text-xs hover:bg-zinc-200 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer border border-white"
+                className="w-full bg-white text-black py-4 rounded-full font-extrabold uppercase tracking-widest text-xs hover:bg-[#00f0ff] hover:text-black hover:border-[#00f0ff] transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer border border-white"
               >
-                Book Free Consultation
+                GET INKED
               </button>
 
               {submitted && (

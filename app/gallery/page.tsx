@@ -263,8 +263,8 @@ export function GalleryContent({ initialType = "tattoos" }: { initialType?: "tat
                       <span>{copied ? "Link Copied!" : "Share Link"}</span>
                     </button>
                     <Link href="/booking" onClick={() => setSelectedItem(null)}>
-                      <button className="bg-white text-black px-6 py-3 rounded-full font-semibold uppercase tracking-widest text-[10px] hover:bg-cyan-400 hover:text-black transition-all duration-300 cursor-pointer border border-white hover:border-cyan-400">
-                        Book Similar
+                      <button className="bg-white text-black px-6 py-3 rounded-full font-extrabold uppercase tracking-widest text-[10px] hover:bg-[#00f0ff] hover:text-black transition-all duration-300 cursor-pointer border border-white hover:border-[#00f0ff]">
+                        GET INKED
                       </button>
                     </Link>
                   </div>

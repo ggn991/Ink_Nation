@@ -155,7 +155,7 @@ export const CursorTrail: React.FC = () => {
   }, []); // Truly runs only once
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[9999]">
+    <div className="pointer-events-none fixed inset-0 z-[100000]">
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>
   );

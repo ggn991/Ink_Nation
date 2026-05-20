@@ -146,7 +146,7 @@ export default function FAQPage() {
             </motion.div>
           ) : (
             <div className="text-center py-20 text-zinc-500 font-light">
-              No answers matched your search terms. Please try another query or book a session!
+              No answers matched your search terms. Please try another query or GET INKED!
             </div>
           )}
         </section>
