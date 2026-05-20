@@ -1,11 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, Variants, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import Link from 'next/link';
+import { Sparkles } from 'lucide-react';
+
 
 
 interface FeatureItemProps {
   name: string;
   value: string;
   position: string;
+  onClick?: () => void;
+  href?: string;
 }
 
 interface LightningProps {
@@ -151,8 +156,8 @@ const Lightning: React.FC<LightningProps> = ({
   return <canvas ref={canvasRef} className="w-full h-full relative" />;
 };
 
-const FeatureItem: React.FC<FeatureItemProps> = ({ name, value, position }) => (
-  <div className={`absolute ${position} z-10 group transition-all duration-300 hover:scale-110`}>
+const FeatureItem: React.FC<FeatureItemProps> = ({ name, value, position, onClick, href }) => {
+  const content = (
     <div className="flex items-center gap-2 relative">
       <div className="relative">
         <div className="w-2 h-2 bg-white rounded-full group-hover:animate-pulse"></div>
@@ -164,17 +169,35 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ name, value, position }) => (
         <div className="absolute -inset-2 bg-white/10 rounded-lg blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
       </div>
     </div>
-  </div>
-);
+  );
+
+  const className = `absolute ${position} z-10 group transition-all duration-300 hover:scale-110 ${(onClick || href) ? 'cursor-pointer' : ''}`;
+
+  if (href) {
+    return (
+      <Link href={href} className={className}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={className} onClick={onClick}>
+      {content}
+    </div>
+  );
+};
 
 export const HeroSection: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [lightningHue, setLightningHue] = useState(230);
+  const [lightningHue, setLightningHue] = useState(195);
+  const [comingSoonService, setComingSoonService] = useState<string | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setLightningHue((prev) => (prev + 90) % 360);
-    }, 10000);
+      // Oscillate within the energetic electric blue/cyan spectrum (195 - 215)
+      setLightningHue((prev) => (prev === 195 ? 215 : 195));
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
 
@@ -211,28 +234,62 @@ export const HeroSection: React.FC = () => {
 
   return (
     <div className="relative w-full bg-black text-white overflow-hidden">
+      <AnimatePresence>
+        {comingSoonService && (
+          <motion.div
+            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            animate={{ opacity: 1, backdropFilter: 'blur(10px)' }}
+            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 cursor-pointer"
+            onClick={() => setComingSoonService(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.8, y: 20 }}
+              className="bg-black/80 border border-white/10 p-8 rounded-3xl text-center max-w-sm mx-4 shadow-2xl backdrop-blur-md"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mb-6 flex justify-center">
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                >
+                  <Sparkles className="w-12 h-12 text-white" />
+                </motion.div>
+              </div>
+              <h3 className="text-3xl font-light mb-3 bg-gradient-to-r from-gray-100 via-gray-300 to-gray-500 bg-clip-text text-transparent">
+                {comingSoonService}
+              </h3>
+              <p className="text-gray-400 mb-8 font-light leading-relaxed">
+                Coming Soon! We are currently crafting beautiful designs and experiences for this service. Stay tuned.
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setComingSoonService(null)}
+                className="px-8 py-3 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-colors"
+              >
+                Got it
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 h-screen">
         {/* Navigation removed and replaced by global Navbar */}
 
         <motion.div variants={containerVariants} initial="hidden" animate="visible"
-          className="w-full z-[200] top-[30%] relative">
-          <motion.div variants={itemVariants}><FeatureItem name="React" value="for base" position="left-0 sm:left-10 top-40" /></motion.div>
-          <motion.div variants={itemVariants}><FeatureItem name="GSAP" value="for scroll" position="left-1/4 top-24" /></motion.div>
-          <motion.div variants={itemVariants}><FeatureItem name="WebGL" value="for lightning" position="right-1/4 top-24" /></motion.div>
-          <motion.div variants={itemVariants}><FeatureItem name="Lenis" value="for smoothness" position="right-0 sm:right-10 top-40" /></motion.div>
+          className="absolute inset-0 z-[200] pointer-events-none">
+          <motion.div variants={itemVariants}><FeatureItem name="Tattoo" value="Custom Ink" position="left-[5%] top-[72%] sm:left-[15%] sm:top-[68%] pointer-events-auto" href="/gallery/tattoos" /></motion.div>
+          <motion.div variants={itemVariants}><FeatureItem name="Piercing" value="Body Art" position="left-[20%] top-[53%] sm:left-[30%] sm:top-[50%] pointer-events-auto" href="/gallery/piercings" /></motion.div>
+          <motion.div variants={itemVariants}><FeatureItem name="Nail Art" value="Styling" position="right-[20%] top-[53%] sm:right-[30%] sm:top-[50%] pointer-events-auto" onClick={() => setComingSoonService('Nail Art')} /></motion.div>
+          <motion.div variants={itemVariants}><FeatureItem name="Tattoo Removal" value="Laser" position="right-[5%] top-[72%] sm:right-[15%] sm:top-[68%] pointer-events-auto" onClick={() => setComingSoonService('Tattoo Removal')} /></motion.div>
         </motion.div>
 
         <motion.div variants={containerVariants} initial="hidden" animate="visible"
-          className="relative z-30 flex flex-col items-center text-center max-w-4xl mx-auto">
-
-
-          <motion.button variants={itemVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-            className="flex items-center space-x-2 px-4 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-sm rounded-full text-sm mb-6 transition-all duration-300 group">
-            <span>Wear your story forever</span>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="transform group-hover:translate-x-1 transition-transform duration-300">
-              <path d="M8 3L13 8L8 13M13 8H3" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </motion.button>
+          className="relative z-30 flex flex-col items-center text-center max-w-4xl mx-auto pt-24 md:pt-32">
 
           <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-light mb-2 tracking-widest uppercase">
             Ink Nation
@@ -244,24 +301,27 @@ export const HeroSection: React.FC = () => {
           <motion.p variants={itemVariants} className="text-gray-400 mb-9 max-w-2xl">
             Premium tattoo studio in Bangalore. Book your consultation and wear your story forever.
           </motion.p>
-          <motion.button variants={itemVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-            className="mt-[100px] sm:mt-[100px] px-8 py-3 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors relative z-40">
-            Explore Our Work
-          </motion.button>
+          <motion.div variants={itemVariants} className="mt-[100px] sm:mt-[100px] relative z-40">
+            <Link href="/gallery/tattoos">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                className="px-8 py-3 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors">
+                Explore Our Work
+              </motion.button>
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
 
-      {/* Background & Tattoo Machine */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}
         className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-black/80"></div>
-        <div className="absolute top-[55%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-to-b from-violet-700/20 to-fuchsia-900/10 blur-3xl"></div>
+        <div className="absolute top-[55%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-to-b from-cyan-500/25 to-blue-600/10 blur-3xl"></div>
         <div className="absolute top-0 w-[100%] left-1/2 transform -translate-x-1/2 h-full">
           <Lightning hue={lightningHue} xOffset={0} speed={1.6} intensity={0.6} size={2} />
         </div>
 
         {/* The Globe Backdrop */}
-        <div className="z-10 absolute top-[55%] left-1/2 transform -translate-x-1/2 w-[600px] h-[600px] backdrop-blur-3xl rounded-full bg-[radial-gradient(circle_at_25%_90%,_#2d1b4e_15%,_#000000de_70%,_#000000ed_100%)]"></div>
+        <div className="z-10 absolute top-[55%] left-1/2 transform -translate-x-1/2 w-[600px] h-[600px] backdrop-blur-3xl rounded-full bg-[radial-gradient(circle_at_25%_90%,_#092644_15%,_#000000de_70%,_#000000ed_100%)]"></div>
 
         {/* Floating Tattoo Machine - Perfectly contained in globe */}
         <motion.div
@@ -279,7 +339,7 @@ export const HeroSection: React.FC = () => {
           <img
             src="/tattoo-machine-new.png"
             alt="Premium Rotary Tattoo Machine"
-            className="w-full h-full object-contain filter brightness-110 drop-shadow-[0_0_30px_rgba(139,92,246,0.3)] rotate-90"
+            className="w-full h-full object-contain filter brightness-110 drop-shadow-[0_0_35px_rgba(0,240,255,0.45)] rotate-90"
           />
         </motion.div>
       </motion.div>

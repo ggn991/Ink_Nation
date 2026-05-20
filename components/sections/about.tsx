@@ -1,7 +1,29 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef } from "react";
+import { motion, useInView, animate } from "framer-motion";
+
+function Counter({ from = 0, to, duration = 2.5, suffix = "", prefix = "", decimals = 0 }: { from?: number, to: number, duration?: number, suffix?: string, prefix?: string, decimals?: number }) {
+  const nodeRef = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(nodeRef, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node || !isInView) return;
+
+    const controls = animate(from, to, {
+      duration,
+      ease: "easeOut",
+      onUpdate(value) {
+        node.textContent = prefix + value.toFixed(decimals) + suffix;
+      }
+    });
+
+    return () => controls.stop();
+  }, [from, to, duration, suffix, prefix, decimals, isInView]);
+
+  return <span ref={nodeRef}>{prefix}{from.toFixed(decimals)}{suffix}</span>;
+}
 
 export const AboutSection = () => {
   return (
@@ -29,18 +51,38 @@ export const AboutSection = () => {
             obsession with making every piece feel truly one-of-a-kind.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full pt-12">
-            <div className="border-t border-violet-500/30 pt-6">
-              <div className="text-4xl font-light text-white mb-1">500+</div>
-              <div className="text-sm tracking-widest text-gray-500 uppercase">Tattoos Completed</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-12 gap-x-8 md:gap-x-12 w-full pt-16 text-center">
+            <div className="flex flex-col items-center">
+              <div className="text-5xl sm:text-6xl md:text-7xl font-extralight tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-500 mb-3 select-none">
+                <Counter to={15} suffix="+" />
+              </div>
+              <div className="text-[10px] md:text-xs tracking-[0.25em] text-zinc-500 uppercase font-light">
+                Professional Artists
+              </div>
             </div>
-            <div className="border-t border-violet-500/30 pt-6">
-              <div className="text-4xl font-light text-white mb-1">8</div>
-              <div className="text-sm tracking-widest text-gray-500 uppercase">Master Artists</div>
+            <div className="flex flex-col items-center">
+              <div className="text-5xl sm:text-6xl md:text-7xl font-extralight tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-500 mb-3 select-none">
+                <Counter to={2} />
+              </div>
+              <div className="text-[10px] md:text-xs tracking-[0.25em] text-zinc-500 uppercase font-light">
+                Premium Studios
+              </div>
             </div>
-            <div className="border-t border-violet-500/30 pt-6">
-              <div className="text-4xl font-light text-white mb-1">Since 2018</div>
-              <div className="text-sm tracking-widest text-gray-500 uppercase">Studio Founded</div>
+            <div className="flex flex-col items-center">
+              <div className="text-5xl sm:text-6xl md:text-7xl font-extralight tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-500 mb-3 select-none">
+                <Counter to={6000} suffix="+" />
+              </div>
+              <div className="text-[10px] md:text-xs tracking-[0.25em] text-zinc-500 uppercase font-light">
+                Tattoos Done
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="text-5xl sm:text-6xl md:text-7xl font-extralight tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-500 mb-3 select-none">
+                <Counter to={4.9} suffix="+" decimals={1} />
+              </div>
+              <div className="text-[10px] md:text-xs tracking-[0.25em] text-zinc-500 uppercase font-light">
+                Average Rating
+              </div>
             </div>
           </div>
         </motion.div>

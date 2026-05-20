@@ -66,30 +66,26 @@ export const CursorTrail: React.FC = () => {
       pointer.current = { x: e.clientX, y: e.clientY };
     };
 
-    const onMouseEnter = () => { isHovering.current = true; };
-    const onMouseLeave = () => { isHovering.current = false; };
-
-    const setupListeners = () => {
-      const interactive = document.querySelectorAll('a, button, [role="button"], .cursor-hover');
-      interactive.forEach(el => {
-        el.addEventListener("mouseenter", onMouseEnter);
-        el.addEventListener("mouseleave", onMouseLeave);
-      });
-      return interactive;
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target?.closest?.('a, button, [role="button"], .cursor-hover, input, select, textarea')) {
+        isHovering.current = true;
+      }
     };
 
-    let interactiveElements = setupListeners();
+    const onMouseOut = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const related = e.relatedTarget as HTMLElement;
+      const wasInteractive = target?.closest?.('a, button, [role="button"], .cursor-hover, input, select, textarea');
+      const isInteractive = related?.closest?.('a, button, [role="button"], .cursor-hover, input, select, textarea');
+      if (wasInteractive && !isInteractive) {
+        isHovering.current = false;
+      }
+    };
 
-    const observer = new MutationObserver(() => {
-      interactiveElements.forEach(el => {
-        el.removeEventListener("mouseenter", onMouseEnter);
-        el.removeEventListener("mouseleave", onMouseLeave);
-      });
-      interactiveElements = setupListeners();
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("mouseover", onMouseOver, { passive: true });
+    window.addEventListener("mouseout", onMouseOut, { passive: true });
 
     const update = () => {
       if (!hasMoved.current) return; // Don't draw until mouse is tracked
@@ -152,11 +148,8 @@ export const CursorTrail: React.FC = () => {
     return () => {
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMouseMove);
-      interactiveElements.forEach(el => {
-        el.removeEventListener("mouseenter", onMouseEnter);
-        el.removeEventListener("mouseleave", onMouseLeave);
-      });
-      observer.disconnect();
+      window.removeEventListener("mouseover", onMouseOver);
+      window.removeEventListener("mouseout", onMouseOut);
       gsap.ticker.remove(update);
     };
   }, []); // Truly runs only once

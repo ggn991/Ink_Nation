@@ -33,9 +33,9 @@ export const WhySection = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-8 bg-zinc-900/50 border border-white/5 rounded-2xl hover:border-violet-500/30 transition-colors group"
+            className="p-8 bg-zinc-900/50 border border-white/5 rounded-2xl hover:border-white/25 transition-colors group"
           >
-            <Palette className="w-12 h-12 text-violet-500 mb-6 group-hover:scale-110 transition-transform" />
+            <Palette className="w-12 h-12 text-white mb-6 group-hover:scale-110 transition-transform" />
             <h3 className="text-xl font-light text-white uppercase tracking-widest mb-4">Every Design is Custom</h3>
             <p className="text-gray-400 font-light leading-relaxed">
               No flash. No copies. Every tattoo is designed uniquely for you, ensuring your story is told in its own original visual language.
@@ -47,9 +47,9 @@ export const WhySection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="p-8 bg-zinc-900/50 border border-white/5 rounded-2xl hover:border-violet-500/30 transition-colors group"
+            className="p-8 bg-zinc-900/50 border border-white/5 rounded-2xl hover:border-white/25 transition-colors group"
           >
-            <ShieldCheck className="w-12 h-12 text-violet-500 mb-6 group-hover:scale-110 transition-transform" />
+            <ShieldCheck className="w-12 h-12 text-white mb-6 group-hover:scale-110 transition-transform" />
             <h3 className="text-xl font-light text-white uppercase tracking-widest mb-4">Sterile & Safe</h3>
             <p className="text-gray-400 font-light leading-relaxed">
               Medical-grade sterilization. Every session, every time. We maintain the highest standards of hygiene for your peace of mind.
@@ -61,9 +61,9 @@ export const WhySection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
-            className="p-8 bg-zinc-900/50 border border-white/5 rounded-2xl hover:border-violet-500/30 transition-colors group"
+            className="p-8 bg-zinc-900/50 border border-white/5 rounded-2xl hover:border-white/25 transition-colors group"
           >
-            <Star className="w-12 h-12 text-violet-500 mb-6 group-hover:scale-110 transition-transform" />
+            <Star className="w-12 h-12 text-white mb-6 group-hover:scale-110 transition-transform" />
             <h3 className="text-xl font-light text-white uppercase tracking-widest mb-4">Award-Winning Artists</h3>
             <p className="text-gray-400 font-light leading-relaxed">
               Our artists have been featured in India's top tattoo conventions, bringing world-class expertise to every needle stroke.

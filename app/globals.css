@@ -3,12 +3,37 @@
 
 
 @theme {
-  --color-accent: hsl(285, 65%, 55%);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-accent: #f8fafc;
+  
+  /* Design System Spacing Tokens */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  
+  /* Design System Shadow Depths */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
 }
 
 :root {
   --background: 0 0% 0%;
   --foreground: 0 0% 100%;
+  
+  /* Global Color variables mapped to MASTER.md */
+  --color-primary: #18181b;
+  --color-on-primary: #ffffff;
+  --color-secondary: #27272a;
+  --color-muted: #181818;
+  --color-border: #3f3f46;
+  --color-destructive: #ef4444;
+  --color-ring: #18181b;
 }
 
 * {
@@ -75,8 +100,9 @@ button, a {
   animation: scroll-vertical var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
 }
 
-/* Custom selection */
+/* Custom premium selection */
 ::selection {
-  background: hsl(285, 65%, 55%);
-  color: white;
+  background: #ffffff;
+  color: #000000;
 }
+

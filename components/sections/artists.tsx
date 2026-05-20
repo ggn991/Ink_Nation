@@ -23,7 +23,7 @@ const artists = [
 
 export const ArtistsSection = () => {
   return (
-    <section className="bg-black py-24 px-6">
+    <section id="artists" className="bg-black py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
@@ -51,13 +51,13 @@ export const ArtistsSection = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
               
-              <div className="absolute inset-0 bg-violet-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-zinc-950/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="absolute bottom-0 left-0 w-full p-8 transition-transform duration-500 transform translate-y-4 group-hover:translate-y-0">
                 <h3 className="text-2xl font-light text-white uppercase tracking-wider mb-2">
                   {artist.name}
                 </h3>
-                <p className="text-violet-400 text-sm tracking-widest uppercase mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                <p className="text-zinc-400 text-sm tracking-widest uppercase mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                   {artist.specialty}
                 </p>
                 <p className="text-gray-400 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">

@@ -90,16 +90,8 @@ export const InfiniteScrollingGallery = ({
               src={item.src}
               alt={item.artist}
               loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-700 scale-100 group-hover:scale-105"
+              className="w-full h-full object-cover transition-all duration-700 scale-100 group-hover:scale-105 grayscale group-hover:grayscale-0"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-              <span className="text-cyan-400 text-[10px] tracking-widest uppercase font-bold mb-1">
-                {item.style}
-              </span>
-              <h4 className="text-white text-base font-light tracking-tight">
-                {item.artist}
-              </h4>
-            </div>
           </div>
         ))}
       </div>
