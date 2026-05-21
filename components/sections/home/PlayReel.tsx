@@ -99,7 +99,7 @@ export const PlayReel = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[999999] bg-black/98 flex items-center justify-center p-4 md:p-8 backdrop-blur-md"
+            className="fixed inset-0 z-[999999] bg-black/98 flex items-center justify-center p-4 md:p-8 backdrop-blur-md cursor-default"
           >
             {/* Close trigger button */}
             <button
@@ -117,14 +117,16 @@ export const PlayReel = () => {
             <div className="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden border border-white/10 bg-zinc-950 shadow-2xl">
               {/* TODO: Replace source URL below with actual client studio reel video asset */}
               <video
-                src="https://assets.mixkit.co/videos/preview/mixkit-tattoo-artist-working-in-his-studio-close-up-34354-large.mp4"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover animate-fade-in"
                 autoPlay
                 loop
                 controls
-                muted={false}
+                muted
                 playsInline
-              />
+              >
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </motion.div>
         )}

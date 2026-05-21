@@ -15,16 +15,6 @@ export const Hero = () => {
   const tickerTimer = useRef<NodeJS.Timeout | null>(null);
   const isHovered = useRef(false);
 
-  // Check sessionStorage if the user previously dismissed the announcement bar
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const dismissed = sessionStorage.getItem("inknation_announcement_dismissed");
-      if (dismissed === "true") {
-        setTickerVisible(false);
-      }
-    }
-  }, []);
-
   // Manage rotation of the announcement ticker
   useEffect(() => {
     if (!tickerVisible || announcements.length === 0) return;
@@ -56,9 +46,6 @@ export const Hero = () => {
 
   const handleDismissTicker = () => {
     setTickerVisible(false);
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("inknation_announcement_dismissed", "true");
-    }
   };
 
   const activeAnnouncement = announcements[tickerIndex];
@@ -79,7 +66,7 @@ export const Hero = () => {
       <div className="absolute top-[40%] right-[-10%] w-[40vw] h-[40vw] bg-cyan-600/5 rounded-full blur-[150px] pointer-events-none" />
 
       {/* Spacing for global Navbar */}
-      <div className="h-24 w-full" />
+      <div className="h-24 w-full shrink-0" />
 
       {/* Dynamic Announcement Ticker */}
       {tickerVisible && activeAnnouncement && (
@@ -87,7 +74,7 @@ export const Hero = () => {
           ref={tickerContainerRef}
           onMouseEnter={() => { isHovered.current = true; }}
           onMouseLeave={() => { isHovered.current = false; }}
-          className="w-full h-12 bg-white/[0.02] border-y border-white/5 backdrop-blur-md flex items-center justify-between px-6 md:px-12 z-40 transition-all duration-300 relative"
+          className="absolute top-24 left-0 w-full h-12 bg-white/[0.02] border-b border-white/5 backdrop-blur-md flex items-center justify-between px-6 md:px-12 z-30 transition-all duration-300"
         >
           {/* Left blinker */}
           <div className="flex items-center space-x-2 shrink-0">

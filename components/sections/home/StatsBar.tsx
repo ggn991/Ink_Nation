@@ -141,9 +141,6 @@ export const StatsBar = () => {
 
               {/* Floating Frame Details */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
-              <div className="absolute top-4 left-4 z-20 bg-zinc-950/80 border border-white/10 px-3 py-1.5 rounded-full backdrop-blur-md select-none text-[8px] font-mono tracking-widest uppercase text-white">
-                [00{activeTab + 1}] PORTRAIT FRAME
-              </div>
 
               <AnimatePresence mode="wait">
                 <motion.div
