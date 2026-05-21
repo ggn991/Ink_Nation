@@ -25,7 +25,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} antialiased`}
     >
-      <body className="bg-black text-white min-h-screen font-sans">
+      <body className="bg-black text-white min-h-screen">
         <AppProviders>
           <Navbar />
           {children}

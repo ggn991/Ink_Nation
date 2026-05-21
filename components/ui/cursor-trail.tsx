@@ -64,13 +64,6 @@ export const CursorTrail: React.FC = () => {
         });
       }
       pointer.current = { x: e.clientX, y: e.clientY };
-
-      // Safety check: if target is not interactive, ensure hover state is reset.
-      // This fixes the "stuck hover" state when elements are removed from the DOM under the cursor.
-      const target = e.target as HTMLElement;
-      if (target && !target.closest?.('a, button, [role="button"], .cursor-hover, input, select, textarea')) {
-        isHovering.current = false;
-      }
     };
 
     const onMouseOver = (e: MouseEvent) => {
@@ -90,15 +83,9 @@ export const CursorTrail: React.FC = () => {
       }
     };
 
-    const onClick = () => {
-      // Immediately reset hover state on click to prevent stuck styles if element unmounts.
-      isHovering.current = false;
-    };
-
     window.addEventListener("mousemove", onMouseMove, { passive: true });
     window.addEventListener("mouseover", onMouseOver, { passive: true });
     window.addEventListener("mouseout", onMouseOut, { passive: true });
-    window.addEventListener("click", onClick, { passive: true });
 
     const update = () => {
       if (!hasMoved.current) return; // Don't draw until mouse is tracked
@@ -163,13 +150,12 @@ export const CursorTrail: React.FC = () => {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseover", onMouseOver);
       window.removeEventListener("mouseout", onMouseOut);
-      window.removeEventListener("click", onClick);
       gsap.ticker.remove(update);
     };
   }, []); // Truly runs only once
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[100000]">
+    <div className="pointer-events-none fixed inset-0 z-[9999]">
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>
   );
