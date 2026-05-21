@@ -2,6 +2,8 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 
 const plans = [
   {
@@ -76,13 +78,14 @@ export const PricingSection = () => {
                 ))}
               </ul>
 
-              <button className={`w-full py-3 rounded-full text-xs tracking-widest uppercase transition-all duration-300 cursor-pointer ${
-                plan.highlight 
-                  ? "bg-cyan-500 text-black hover:bg-cyan-400 font-semibold shadow-lg shadow-cyan-500/10" 
-                  : "bg-white/5 text-white hover:bg-white/10 border border-white/10"
-              }`}>
-                Get a Quote
-              </button>
+              <Link href="/booking" className="w-full mt-auto block">
+                <Button 
+                  variant={plan.highlight ? "primary" : "secondary"}
+                  className="w-full justify-center text-center"
+                >
+                  GET INKED
+                </Button>
+              </Link>
             </motion.div>
           ))}
         </div>

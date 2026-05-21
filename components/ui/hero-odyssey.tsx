@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, Variants, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import { Sparkles } from 'lucide-react';
+import { SmokeParticles } from "./smoke-particles";
 
 
 
@@ -319,6 +320,9 @@ export const HeroSection: React.FC = () => {
         <div className="absolute top-0 w-[100%] left-1/2 transform -translate-x-1/2 h-full">
           <Lightning hue={lightningHue} xOffset={0} speed={1.6} intensity={0.6} size={2} />
         </div>
+
+        {/* Custom looping canvas smoke particles */}
+        <SmokeParticles />
 
         {/* The Globe Backdrop */}
         <div className="z-10 absolute top-[55%] left-1/2 transform -translate-x-1/2 w-[600px] h-[600px] backdrop-blur-3xl rounded-full bg-[radial-gradient(circle_at_25%_90%,_#092644_15%,_#000000de_70%,_#000000ed_100%)]"></div>

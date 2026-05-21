@@ -79,7 +79,7 @@ export const ContactSection = () => {
             <div className="bg-zinc-950 p-8 border border-white/5 rounded-3xl hover:border-zinc-800 transition-all duration-500 relative group">
               <div className="absolute top-8 right-8 flex items-center gap-1.5 bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full text-xs font-medium border border-cyan-500/20">
                 <Star className="w-3.5 h-3.5 fill-current" />
-                <span>4.9</span>
+                <span>4.8</span>
                 <span className="text-cyan-400/60 font-light text-[10px]">(1,200+)</span>
               </div>
               <h3 className="text-2xl font-light uppercase tracking-widest text-white mb-6">Bangalore Studio</h3>
@@ -102,7 +102,7 @@ export const ContactSection = () => {
                   <div>
                     <h4 className="text-xs uppercase tracking-widest text-zinc-600 mb-1">Address</h4>
                     <p className="text-gray-400 font-light text-sm leading-relaxed">
-                      1st Floor, 80 Feet Rd, 5th Block, Koramangala, Bengaluru, KA 560095
+                      1st Floor, 20th Main Rd, KHB Colony, 5th Block, Koramangala, Bengaluru, Karnataka 560095
                     </p>
                   </div>
                 </div>
@@ -111,7 +111,7 @@ export const ContactSection = () => {
                   <div>
                     <h4 className="text-xs uppercase tracking-widest text-zinc-600 mb-1">Phone</h4>
                     <p className="text-gray-400 font-light text-sm">
-                      <a href="tel:+919876543210" className="hover:text-white transition-colors">+91 98765 43210</a>
+                      <a href="tel:+918735097898" className="hover:text-white transition-colors">+91 87350 97898</a>
                     </p>
                   </div>
                 </div>
@@ -120,9 +120,28 @@ export const ContactSection = () => {
                   <div>
                     <h4 className="text-xs uppercase tracking-widest text-zinc-600 mb-1">Hours</h4>
                     <p className="text-gray-400 font-light text-sm">
-                      10:00 AM – 11:00 PM Daily
+                      10:00 AM – 9:00 PM Daily
                     </p>
                   </div>
+                </div>
+
+                <div className="pt-4 flex gap-3">
+                  <a 
+                    href="https://www.google.com/maps/place/Ink+Nation+tattoo+studio/@12.9361184,77.61353,17z/data=!3m1!5s0x3bae144ff14aea87:0x53ca2f919ed6b693!4m14!1m7!3m6!1s0x3bae15f1e7d08be3:0x1827d258214103fd!2sInk+Nation+tattoo+studio!8m2!3d12.9361184!4d77.6161049!16s%2Fg%2F11qgk27lrn!3m5!1s0x3bae15f1e7d08be3:0x1827d258214103fd!8m2!3d12.9361184!4d77.6161049!16s%2Fg%2F11qgk27lrn?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center py-2.5 bg-white text-black hover:bg-cyan-400 hover:text-black hover:border-cyan-400 border border-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300"
+                  >
+                    View on Maps
+                  </a>
+                  <a 
+                    href="https://wa.me/918735097898"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center py-2.5 bg-zinc-900 border border-white/10 hover:border-cyan-400 hover:text-cyan-400 hover:bg-cyan-500/5 text-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300"
+                  >
+                    WhatsApp
+                  </a>
                 </div>
               </div>
             </div>
@@ -131,7 +150,7 @@ export const ContactSection = () => {
             <div className="bg-zinc-950 p-8 border border-white/5 rounded-3xl hover:border-zinc-800 transition-all duration-500 relative group">
               <div className="absolute top-8 right-8 flex items-center gap-1.5 bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full text-xs font-medium border border-cyan-500/20">
                 <Star className="w-3.5 h-3.5 fill-current" />
-                <span>4.9</span>
+                <span>5.0</span>
                 <span className="text-cyan-400/60 font-light text-[10px]">(650+)</span>
               </div>
               <h3 className="text-2xl font-light uppercase tracking-widest text-white mb-6">Mysore Studio</h3>
@@ -154,7 +173,7 @@ export const ContactSection = () => {
                   <div>
                     <h4 className="text-xs uppercase tracking-widest text-zinc-600 mb-1">Address</h4>
                     <p className="text-gray-400 font-light text-sm leading-relaxed">
-                      Gokulam 2nd Stage, Gokulam, Mysuru, KA 570002
+                      F-225, Near Ganesha Temple, 1st Floor, 1st Main Road, Gokulam, Mysuru, Karnataka 570002
                     </p>
                   </div>
                 </div>
@@ -163,7 +182,7 @@ export const ContactSection = () => {
                   <div>
                     <h4 className="text-xs uppercase tracking-widest text-zinc-600 mb-1">Phone</h4>
                     <p className="text-gray-400 font-light text-sm">
-                      <a href="tel:+919876543220" className="hover:text-white transition-colors">+91 98765 43220</a>
+                      <a href="tel:+918735097898" className="hover:text-white transition-colors">+91 87350 97898</a>
                     </p>
                   </div>
                 </div>
@@ -175,6 +194,25 @@ export const ContactSection = () => {
                       11:00 AM – 9:00 PM Daily
                     </p>
                   </div>
+                </div>
+
+                <div className="pt-4 flex gap-3">
+                  <a 
+                    href="https://www.google.com/maps/place/Ink+Nation+Tattoo+Studio+02/@12.29656,76.6263891,17z/data=!3m1!4b1!4m6!3m5!1s0x3baf7b41f225f739:0x6bc60281c863ae6f!8m2!3d12.29656!4d76.628964!16s%2Fg%2F11stydhq7d?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center py-2.5 bg-white text-black hover:bg-cyan-400 hover:text-black hover:border-cyan-400 border border-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300"
+                  >
+                    View on Maps
+                  </a>
+                  <a 
+                    href="https://wa.me/918735097898"
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex-1 text-center py-2.5 bg-zinc-900 border border-white/10 hover:border-cyan-400 hover:text-cyan-400 hover:bg-cyan-500/5 text-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300"
+                  >
+                    WhatsApp
+                  </a>
                 </div>
               </div>
             </div>
@@ -271,9 +309,9 @@ export const ContactSection = () => {
               {/* Consistent rounded-full consultation button */}
               <button
                 type="submit"
-                className="w-full bg-white text-black py-4 rounded-full font-semibold uppercase tracking-widest text-xs hover:bg-zinc-200 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer border border-white"
+                className="w-full bg-white text-black py-4 rounded-full font-extrabold uppercase tracking-widest text-xs hover:bg-[#00f0ff] hover:text-black hover:border-[#00f0ff] transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer border border-white"
               >
-                Book Free Consultation
+                GET INKED
               </button>
 
               {submitted && (
