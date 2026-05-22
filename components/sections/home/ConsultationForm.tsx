@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Send, CheckCircle2 } from "lucide-react";
 import { SectionHeading } from "@/components/sections/shared/SectionHeading";
 import { Button } from "@/components/ui/Button";
+import { formValidationSchema } from "@/lib/validation";
 
 export const ConsultationForm = () => {
   const [formData, setFormData] = useState({
@@ -15,16 +16,38 @@ export const ConsultationForm = () => {
     service: "tattoo",
     project: ""
   });
+  const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name as keyof typeof errors]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const result = formValidationSchema.safeParse({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+    });
+
+    if (!result.success) {
+      const fieldErrors: { name?: string; email?: string; phone?: string } = {};
+      result.error.issues.forEach((issue) => {
+        const path = issue.path[0] as keyof typeof fieldErrors;
+        fieldErrors[path] = issue.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setErrors({});
     setLoading(true);
 
     // Simulate API request
@@ -42,7 +65,7 @@ export const ConsultationForm = () => {
       <div className="absolute top-[40%] left-[20%] w-[350px] h-[350px] bg-[#00f0ff]/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* Left Column: Form sheet */}
           <div className="lg:col-span-7">
@@ -69,8 +92,15 @@ export const ConsultationForm = () => {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="e.g. Rahul Sharma"
-                      className="bg-zinc-950/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light"
+                      className={`bg-zinc-950/80 border rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:ring-1 transition-all font-light ${
+                        errors.name 
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" 
+                          : "border-white/10 focus:border-[#00f0ff] focus:ring-[#00f0ff]/20"
+                      }`}
                     />
+                    {errors.name && (
+                      <p className="text-red-500 text-[11px] mt-1 ml-1 font-light">{errors.name}</p>
+                    )}
                   </div>
 
                   {/* Email */}
@@ -86,8 +116,15 @@ export const ConsultationForm = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="e.g. rahul@example.com"
-                      className="bg-zinc-950/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light"
+                      className={`bg-zinc-950/80 border rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:ring-1 transition-all font-light ${
+                        errors.email 
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" 
+                          : "border-white/10 focus:border-[#00f0ff] focus:ring-[#00f0ff]/20"
+                      }`}
                     />
+                    {errors.email && (
+                      <p className="text-red-500 text-[11px] mt-1 ml-1 font-light">{errors.email}</p>
+                    )}
                   </div>
                 </div>
 
@@ -105,8 +142,15 @@ export const ConsultationForm = () => {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="e.g. +91 98765 43210"
-                      className="bg-zinc-950/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light"
+                      className={`bg-zinc-950/80 border rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-600 focus:outline-none focus:ring-1 transition-all font-light ${
+                        errors.phone 
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" 
+                          : "border-white/10 focus:border-[#00f0ff] focus:ring-[#00f0ff]/20"
+                      }`}
                     />
+                    {errors.phone && (
+                      <p className="text-red-500 text-[11px] mt-1 ml-1 font-light">{errors.phone}</p>
+                    )}
                   </div>
 
                   {/* Instagram */}
@@ -200,7 +244,7 @@ export const ConsultationForm = () => {
                   Consultation Enquiry Received! 🎉
                 </h4>
                 <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed max-w-md">
-                  Thank you, <strong className="text-white font-medium">{formData.name}</strong>. A master artist from our <strong className="text-white font-medium">{formData.branch === "bangalore" ? "Bangalore" : "Mysore"}</strong> studio will WhatsApp you within 24 hours to schedule your session.
+                  Thank you, <strong className="text-white font-medium">{formData.name}</strong>. A master artist from our <strong className="text-white font-medium">{formData.branch === "bangalore" ? "Bangalore" : "Mysore"}</strong> studio will contact you within 24 hours.
                 </p>
                 <button
                   onClick={() => setIsSubmitted(false)}
@@ -235,6 +279,18 @@ export const ConsultationForm = () => {
               </h4>
               <p className="text-zinc-400 text-xs sm:text-sm font-light leading-relaxed">
                 Our curation team is highly responsive. We typically verify and respond via WhatsApp or E-mail within <strong className="text-white font-semibold">2 hours</strong> of receipt during operational schedules.
+              </p>
+            </div>
+
+            <div className="border border-white/5 rounded-2xl bg-zinc-950/40 p-6 md:p-8 space-y-4">
+              <span className="text-[9px] tracking-[0.25em] font-mono text-[#00f0ff] uppercase block font-semibold">
+                PREMIUM STANDARDS
+              </span>
+              <h4 className="text-lg sm:text-xl font-light text-white uppercase tracking-wider">
+                BEST TATTOO ARTISTS
+              </h4>
+              <p className="text-zinc-400 text-xs sm:text-sm font-light leading-relaxed">
+                As the premier <strong className="text-white font-semibold">custom tattoo studio in Bangalore and Mysore</strong>, our studios house <strong className="text-white font-semibold">best-in-class tattoo artists</strong>. We offer custom designs, premium stencil stencils, and medical-grade autoclave sterilization protocols.
               </p>
             </div>
           </div>

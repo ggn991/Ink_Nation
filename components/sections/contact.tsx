@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Clock, Star, Mail } from "lucide-react";
+import { MapPin, Phone, Clock, Star, Mail, Send, CheckCircle2 } from "lucide-react";
+import { formValidationSchema } from "@/lib/validation";
+import { Button } from "@/components/ui/Button";
 
 const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -25,26 +27,56 @@ export const ContactSection = () => {
     name: "",
     email: "",
     phone: "",
-    location: "Bangalore Studio",
     instagram: "",
-    project: "",
+    branch: "bangalore",
+    service: "tattoo",
+    project: ""
   });
 
-  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
+    
+    const result = formValidationSchema.safeParse({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+    });
+
+    if (!result.success) {
+      const fieldErrors: { name?: string; email?: string; phone?: string } = {};
+      result.error.issues.forEach((issue) => {
+        const path = issue.path[0] as keyof typeof fieldErrors;
+        fieldErrors[path] = issue.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setErrors({});
+    setLoading(true);
+
+    // Simulate API request
+    setTimeout(() => {
+      console.log("Ink Nation Contact Form Data Submitted:", formData);
+      setLoading(false);
+      setIsSubmitted(true);
+    }, 1500);
   };
 
   return (
-    <section id="contact" className="bg-black py-24 px-6 relative overflow-hidden">
+    <section id="contact" className="bg-black py-24 px-6 relative overflow-hidden select-none">
       {/* Decorative background glow */}
       <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-zinc-900/30 blur-[150px] rounded-full pointer-events-none -z-10"></div>
       
@@ -224,106 +256,188 @@ export const ContactSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="lg:col-span-7"
+            className="lg:col-span-7 w-full"
           >
-            <form onSubmit={handleSubmit} className="bg-zinc-950 p-8 md:p-12 border border-white/5 rounded-3xl space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-1">Full Name</label>
-                  <input
-                    type="text"
-                    name="name"
+            {!isSubmitted ? (
+              <form onSubmit={handleSubmit} className="bg-zinc-950 p-8 md:p-12 border border-white/5 rounded-3xl space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Full Name */}
+                  <div className="flex flex-col space-y-2">
+                    <label htmlFor="name" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
+                      Full Name *
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="e.g. Rahul Sharma"
+                      className={`bg-black border rounded-xl px-4 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:ring-1 transition-all font-light ${
+                        errors.name 
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" 
+                          : "border-zinc-800 hover:border-zinc-700 focus:border-[#00f0ff] focus:ring-[#00f0ff]/20"
+                      }`}
+                    />
+                    {errors.name && (
+                      <p className="text-red-500 text-[11px] mt-1 ml-1 font-light">{errors.name}</p>
+                    )}
+                  </div>
+
+                  {/* Email */}
+                  <div className="flex flex-col space-y-2">
+                    <label htmlFor="email" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
+                      Email Address *
+                    </label>
+                    <input
+                      required
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="e.g. rahul@example.com"
+                      className={`bg-black border rounded-xl px-4 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:ring-1 transition-all font-light ${
+                        errors.email 
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" 
+                          : "border-zinc-800 hover:border-zinc-700 focus:border-[#00f0ff] focus:ring-[#00f0ff]/20"
+                      }`}
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-[11px] mt-1 ml-1 font-light">{errors.email}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Phone */}
+                  <div className="flex flex-col space-y-2">
+                    <label htmlFor="phone" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
+                      Phone Number *
+                    </label>
+                    <input
+                      required
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="e.g. +91 98765 43210"
+                      className={`bg-black border rounded-xl px-4 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:ring-1 transition-all font-light ${
+                        errors.phone 
+                          ? "border-red-500 focus:border-red-500 focus:ring-red-500/20" 
+                          : "border-zinc-800 hover:border-zinc-700 focus:border-[#00f0ff] focus:ring-[#00f0ff]/20"
+                      }`}
+                    />
+                    {errors.phone && (
+                      <p className="text-red-500 text-[11px] mt-1 ml-1 font-light">{errors.phone}</p>
+                    )}
+                  </div>
+
+                  {/* Instagram */}
+                  <div className="flex flex-col space-y-2">
+                    <label htmlFor="instagram" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
+                      Instagram handle (optional)
+                    </label>
+                    <input
+                      type="text"
+                      id="instagram"
+                      name="instagram"
+                      value={formData.instagram}
+                      onChange={handleChange}
+                      placeholder="e.g. @rahul_sketches"
+                      className="bg-black border border-zinc-800 hover:border-zinc-700 rounded-xl px-4 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {/* Branch selection */}
+                  <div className="flex flex-col space-y-2">
+                    <label htmlFor="branch" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
+                      Preferred Studio *
+                    </label>
+                    <select
+                      id="branch"
+                      name="branch"
+                      value={formData.branch}
+                      onChange={handleChange}
+                      className="bg-black border border-zinc-800 hover:border-zinc-700 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light cursor-pointer appearance-none"
+                      style={{ backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25em 1.25em', paddingRight: '2.5rem' }}
+                    >
+                      <option value="bangalore" className="bg-black text-white">Bangalore (Koramangala 5th Block)</option>
+                      <option value="mysore" className="bg-black text-white">Mysore (Gokulam 2nd Stage)</option>
+                    </select>
+                  </div>
+
+                  {/* Service selection */}
+                  <div className="flex flex-col space-y-2">
+                    <label htmlFor="service" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
+                      Select Service *
+                    </label>
+                    <select
+                      id="service"
+                      name="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      className="bg-black border border-zinc-800 hover:border-zinc-700 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light cursor-pointer appearance-none"
+                      style={{ backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25em 1.25em', paddingRight: '2.5rem' }}
+                    >
+                      <option value="tattoo" className="bg-black text-white">Custom Tattoo Art</option>
+                      <option value="piercing" className="bg-black text-white">Body Piercing</option>
+                      <option value="training" className="bg-black text-white">Academy Tattoo Training</option>
+                      <option value="other" className="bg-black text-white">Other / General Inquiry</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Textarea */}
+                <div className="flex flex-col space-y-2">
+                  <label htmlFor="project" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
+                    Tell us about your project idea *
+                  </label>
+                  <textarea
                     required
-                    value={formData.name}
+                    id="project"
+                    name="project"
+                    value={formData.project}
                     onChange={handleChange}
-                    placeholder="Arjun Singh"
-                    className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm"
+                    rows={4}
+                    placeholder="Describe placement, size, styling (e.g. realistic black & grey tiger on forearm), and references..."
+                    className="bg-black border border-zinc-800 hover:border-zinc-700 rounded-xl px-4 py-3.5 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light resize-none"
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-1">Email Address</label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="arjun@example.com"
-                    className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-1">Phone Number</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    required
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="+91 98765 43210"
-                    className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-1">Preferred Location</label>
-                  <select
-                    name="location"
-                    value={formData.location}
-                    onChange={handleChange}
-                    className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm appearance-none cursor-pointer"
-                    style={{ backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25em 1.25em', paddingRight: '2.5rem' }}
+
+                <div className="pt-2">
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    disabled={loading}
+                    className="w-full sm:w-auto px-10"
                   >
-                    <option value="Bangalore Studio" className="bg-black text-white">Bangalore Studio</option>
-                    <option value="Mysore Studio" className="bg-black text-white">Mysore Studio</option>
-                  </select>
+                    <span>{loading ? "Sending Enquiry..." : "Send Consultation Enquiry"}</span>
+                    {!loading && <Send className="w-4 h-4 shrink-0" />}
+                  </Button>
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2 sm:col-span-2">
-                  <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-1">Instagram Handle (Optional)</label>
-                  <input
-                    type="text"
-                    name="instagram"
-                    value={formData.instagram}
-                    onChange={handleChange}
-                    placeholder="@username"
-                    className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-1">Describe Your Tattoo Idea</label>
-                <textarea
-                  name="project"
-                  required
-                  value={formData.project}
-                  onChange={handleChange}
-                  rows={4}
-                  placeholder="Tell us about the concept, reference images, sizing (e.g. 4x4 inches), and placement (e.g. forearm)..."
-                  className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors resize-none font-light text-sm"
-                />
-              </div>
-
-              {/* Consistent rounded-full consultation button */}
-              <button
-                type="submit"
-                className="w-full bg-white text-black py-4 rounded-full font-extrabold uppercase tracking-widest text-xs hover:bg-[#00f0ff] hover:text-black hover:border-[#00f0ff] transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer border border-white"
-              >
-                GET INKED
-              </button>
-
-              {submitted && (
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-emerald-500 text-xs text-center font-light uppercase tracking-widest"
+              </form>
+            ) : (
+              <div className="p-8 md:p-12 bg-zinc-950 border border-[#00f0ff]/30 rounded-3xl flex flex-col items-center text-center space-y-5 shadow-[0_0_40px_rgba(0,240,255,0.1)]">
+                <CheckCircle2 className="w-16 h-16 text-[#00f0ff] animate-bounce" />
+                <h4 className="text-xl sm:text-2xl uppercase tracking-wider text-white">
+                  Consultation Enquiry Received! 🎉
+                </h4>
+                <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed max-w-md">
+                  Thank you, <strong className="text-white font-medium">{formData.name}</strong>. A master artist from our <strong className="text-white font-medium">{formData.branch === "bangalore" ? "Bangalore" : "Mysore"}</strong> studio will contact you within 24 hours.
+                </p>
+                <button
+                  onClick={() => setIsSubmitted(false)}
+                  className="text-xs text-[#00f0ff] hover:underline font-mono uppercase tracking-widest pt-2 cursor-pointer"
                 >
-                  Consultation request submitted! We will reach out within 24 hours.
-                </motion.p>
-              )}
-            </form>
+                  Send another request
+                </button>
+              </div>
+            )}
           </motion.div>
 
         </div>

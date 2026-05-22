@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import { Check, Calendar, User, Shield, Star, MapPin, ArrowRight, ArrowLeft, Upload, Sparkles, X, CheckCircle, ShieldCheck } from "lucide-react";
 import { artists } from "@/lib/data/artists";
 import { BreadcrumbSchema } from "@/lib/seo/json-ld";
+import { formValidationSchema } from "@/lib/validation";
 
 export default function BookingPage() {
   const [step, setStep] = useState(1);
@@ -28,6 +29,7 @@ export default function BookingPage() {
 
   const [uploading, setUploading] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
 
   const branches = [
     {
@@ -85,6 +87,9 @@ export default function BookingPage() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setBookingData(prev => ({ ...prev, [name]: value }));
+    if (errors[name as keyof typeof errors]) {
+      setErrors(prev => ({ ...prev, [name]: undefined }));
+    }
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,6 +115,23 @@ export default function BookingPage() {
     e.preventDefault();
     if (!bookingData.agreeToSafety) return;
 
+    const result = formValidationSchema.safeParse({
+      name: bookingData.name,
+      email: bookingData.email,
+      phone: bookingData.phone,
+    });
+
+    if (!result.success) {
+      const fieldErrors: { name?: string; email?: string; phone?: string } = {};
+      result.error.issues.forEach((issue) => {
+        const path = issue.path[0] as keyof typeof fieldErrors;
+        fieldErrors[path] = issue.message;
+      });
+      setErrors(fieldErrors);
+      return;
+    }
+
+    setErrors({});
     // Log the consolidated booking object to console
     console.log("CONSOLIDATED INK NATION BOOKING:", bookingData);
     setSuccessModalOpen(true);
@@ -119,6 +141,7 @@ export default function BookingPage() {
     setSuccessModalOpen(false);
     // Reset wizard
     setStep(1);
+    setErrors({});
     setBookingData({
       branch: "",
       service: "",
@@ -467,8 +490,13 @@ export default function BookingPage() {
                           value={bookingData.name}
                           onChange={handleInputChange}
                           placeholder="Arjun Singh"
-                          className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm"
+                          className={`w-full bg-black border rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm ${
+                            errors.name ? "border-red-500 focus:border-red-500" : "border-zinc-800 hover:border-zinc-700 focus:border-zinc-500"
+                          }`}
                         />
+                        {errors.name && (
+                          <p className="text-red-500 text-[11px] mt-1 ml-1 font-light">{errors.name}</p>
+                        )}
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-zinc-500">Email Address</label>
@@ -479,8 +507,13 @@ export default function BookingPage() {
                           value={bookingData.email}
                           onChange={handleInputChange}
                           placeholder="arjun@example.com"
-                          className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm"
+                          className={`w-full bg-black border rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm ${
+                            errors.email ? "border-red-500 focus:border-red-500" : "border-zinc-800 hover:border-zinc-700 focus:border-zinc-500"
+                          }`}
                         />
+                        {errors.email && (
+                          <p className="text-red-500 text-[11px] mt-1 ml-1 font-light">{errors.email}</p>
+                        )}
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-zinc-500">WhatsApp / Phone</label>
@@ -491,8 +524,13 @@ export default function BookingPage() {
                           value={bookingData.phone}
                           onChange={handleInputChange}
                           placeholder="+91 98765 43210"
-                          className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm"
+                          className={`w-full bg-black border rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm ${
+                            errors.phone ? "border-red-500 focus:border-red-500" : "border-zinc-800 hover:border-zinc-700 focus:border-zinc-500"
+                          }`}
                         />
+                        {errors.phone && (
+                          <p className="text-red-500 text-[11px] mt-1 ml-1 font-light">{errors.phone}</p>
+                        )}
                       </div>
                     </div>
 
