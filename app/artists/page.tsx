@@ -26,12 +26,12 @@ export default function ArtistsPage() {
 
   const filteredArtists = artists.filter((artist) => {
     if (activeTab === "piercings") {
-      return artist.id === "ricky";
+      return artist.specialty.toLowerCase().includes("piercing");
     }
     if (activeTab === "nail-art") {
-      return artist.id === "meera";
+      return artist.specialty.toLowerCase().includes("nail");
     }
-    return artist.id !== "ricky" && artist.id !== "meera";
+    return artist.specialty.toLowerCase().includes("tattoo");
   });
 
   return (
@@ -85,71 +85,86 @@ export default function ArtistsPage() {
         {/* Master Artists Grid */}
         <section className="py-20 px-6 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredArtists.map((artist, idx) => (
+            {filteredArtists.length === 0 ? (
               <motion.div
-                key={artist.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
-                onMouseEnter={() => setHoveredArtist(artist.id)}
-                onMouseLeave={() => setHoveredArtist(null)}
-                className="bg-zinc-950 border border-white/5 rounded-3xl p-6 relative overflow-hidden group hover:border-cyan-500/30 transition-all duration-500 flex flex-col justify-between"
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="col-span-full bg-zinc-950/40 border border-white/5 border-dashed rounded-3xl p-12 text-center flex flex-col justify-center items-center py-20 relative overflow-hidden"
               >
-                {/* Visual ink splatter glow behind */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(6,182,212,0.02)_0%,_transparent_70%)] pointer-events-none" />
-                
-                <div>
-                  {/* Photo container */}
-                  <div className="aspect-[4/5] rounded-2xl overflow-hidden mb-6 relative bg-black border border-white/10">
-                    <img
-                      src={artist.image}
-                      alt={artist.name}
-                      className={`w-full h-full object-cover transition-all duration-700 ${
-                        hoveredArtist === artist.id ? "scale-105 grayscale-0" : "grayscale"
-                      }`}
-                    />
-                    
-                    {/* Hover piece count previews */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center p-4">
-                      <div className="text-center space-y-3">
-                        <div className="text-xs uppercase tracking-widest text-cyan-400 font-semibold mb-2">Portfolio Preview</div>
-                        <div className="flex gap-2 justify-center">
-                          {artist.portfolio.map((port, pIdx) => (
-                            <div key={pIdx} className="w-12 h-12 rounded-lg overflow-hidden border border-white/20">
-                              <img src={port.image} alt="" className="w-full h-full object-cover" />
-                            </div>
-                          ))}
+                <span className="text-[10px] tracking-[0.4em] text-cyan-400 uppercase font-mono mb-4 block animate-pulse">CREATIVE HORIZONS</span>
+                <h3 className="text-3xl font-light uppercase tracking-widest text-white mb-4">Coming Soon</h3>
+                <p className="text-zinc-500 font-light text-xs max-w-md mx-auto leading-relaxed">
+                  We are currently curating elite talent for {activeTab === "nail-art" ? "Nail Artistry" : activeTab}. Stay tuned as we expand our resident team of master creators.
+                </p>
+              </motion.div>
+            ) : (
+              filteredArtists.map((artist, idx) => (
+                <motion.div
+                  key={artist.id}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  onMouseEnter={() => setHoveredArtist(artist.id)}
+                  onMouseLeave={() => setHoveredArtist(null)}
+                  className="bg-zinc-950 border border-white/5 rounded-3xl p-6 relative overflow-hidden group hover:border-cyan-500/30 transition-all duration-500 flex flex-col justify-between"
+                >
+                  {/* Visual ink splatter glow behind */}
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(6,182,212,0.02)_0%,_transparent_70%)] pointer-events-none" />
+                  
+                  <div>
+                    {/* Photo container */}
+                    <div className="aspect-[4/5] rounded-2xl overflow-hidden mb-6 relative bg-black border border-white/10">
+                      <img
+                        src={artist.image}
+                        alt={artist.name}
+                        className={`w-full h-full object-cover transition-all duration-700 ${
+                          hoveredArtist === artist.id ? "scale-105 grayscale-0" : "grayscale"
+                        }`}
+                      />
+                      
+                      {/* Hover piece count previews */}
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center p-4">
+                        <div className="text-center space-y-3">
+                          <div className="text-xs uppercase tracking-widest text-cyan-400 font-semibold mb-2">Portfolio Preview</div>
+                          <div className="flex gap-2 justify-center">
+                            {artist.portfolio.map((port, pIdx) => (
+                              <div key={pIdx} className="w-12 h-12 rounded-lg overflow-hidden border border-white/20">
+                                <img src={port.image} alt="" className="w-full h-full object-cover" />
+                              </div>
+                            ))}
+                          </div>
+                          <div className="text-[10px] text-zinc-400 tracking-wider pt-2">3 Core Masterpieces</div>
                         </div>
-                        <div className="text-[10px] text-zinc-400 tracking-wider pt-2">3 Core Masterpieces</div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-2 mb-6">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-cyan-400 tracking-widest uppercase font-mono">{artist.specialty}</span>
-                      <span className="text-[10px] text-zinc-500 uppercase tracking-widest">{artist.experience}</span>
+                    <div className="space-y-2 mb-6">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-cyan-400 tracking-widest uppercase font-mono">{artist.specialty}</span>
+                        <span className="text-[10px] text-zinc-500 uppercase tracking-widest">{artist.experience}</span>
+                      </div>
+                      <h3 className="text-2xl font-light uppercase tracking-wider text-white group-hover:text-cyan-400 transition-colors">
+                        {artist.name}
+                      </h3>
+                      <p className="text-gray-400 font-light text-xs leading-relaxed line-clamp-3">
+                        {artist.bio}
+                      </p>
                     </div>
-                    <h3 className="text-2xl font-light uppercase tracking-wider text-white group-hover:text-cyan-400 transition-colors">
-                      {artist.name}
-                    </h3>
-                    <p className="text-gray-400 font-light text-xs leading-relaxed line-clamp-3">
-                      {artist.bio}
-                    </p>
                   </div>
-                </div>
 
-                <div className="pt-2">
-                  <Link href={`/artists/${artist.slug}`} className="block">
-                    <button className="w-full py-3 bg-zinc-900 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center justify-center gap-2">
-                      <span>View Full Work</span>
-                      <Eye className="w-3.5 h-3.5" />
-                    </button>
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="pt-2">
+                    <Link href={`/artists/${artist.slug}`} className="block">
+                      <button className="w-full py-3 bg-zinc-900 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center justify-center gap-2">
+                        <span>View Full Work</span>
+                        <Eye className="w-3.5 h-3.5" />
+                      </button>
+                    </Link>
+                  </div>
+                </motion.div>
+              ))
+            )}
 
             {/* Join Our Team recruitment card */}
             <motion.div
@@ -170,7 +185,7 @@ export default function ArtistsPage() {
                 </div>
               </div>
 
-              <a href="mailto:careers@inknation.in" className="w-full">
+              <a href="mailto:careers@inknation.in" className="w-full mt-6 sm:mt-8">
                 <button className="w-full py-4 bg-white text-black rounded-full text-[10px] tracking-widest uppercase font-semibold hover:bg-cyan-400 hover:text-black hover:border-cyan-400 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer inline-flex items-center justify-center gap-2 border border-white">
                   <span>Send Portfolio</span>
                   <ArrowRight className="w-3.5 h-3.5" />

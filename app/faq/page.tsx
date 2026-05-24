@@ -5,21 +5,32 @@ import { motion, AnimatePresence } from "framer-motion";
 import { AppProviders } from "@/components/layout/app-providers";
 import { Footer } from "@/components/layout/footer";
 import { faqs, faqCategories } from "@/lib/data/faqs";
-import { Plus, Minus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { FAQPageSchema, BreadcrumbSchema } from "@/lib/seo/json-ld";
 
 function FAQAccordionItem({ question, answer, isOpen, onToggle }: { question: string; answer: string; isOpen: boolean; onToggle: () => void }) {
   return (
-    <div className="border-b border-white/5 last:border-b-0 py-5">
+    <div
+      className={`border border-white/5 bg-zinc-950/20 first:rounded-t-2xl last:rounded-b-2xl transition-all duration-300 -mt-px overflow-hidden ${
+        isOpen ? "bg-zinc-950/50 border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.03)]" : "hover:bg-zinc-950/40"
+      }`}
+    >
       <button
         onClick={onToggle}
-        className="w-full flex justify-between items-center text-left py-3 focus:outline-none cursor-pointer group"
+        className="w-full flex items-center gap-4 text-left px-6 py-5 focus:outline-none cursor-pointer group"
       >
-        <span className="text-base sm:text-lg font-light text-white group-hover:text-cyan-400 transition-colors tracking-wide">
-          {question}
+        <span className={`flex items-center justify-center w-5 h-5 shrink-0 transition-colors ${
+          isOpen ? "text-cyan-400" : "text-zinc-500 group-hover:text-cyan-400"
+        }`}>
+          <div className="relative flex items-center justify-center w-3.5 h-3.5 shrink-0">
+            <div className="absolute w-3.5 h-0.5 bg-current rounded-full transition-transform duration-300" />
+            <div className={`absolute w-0.5 h-3.5 bg-current rounded-full transition-all duration-300 ${isOpen ? "rotate-90 opacity-0" : ""}`} />
+          </div>
         </span>
-        <span className="ml-4 p-1.5 rounded-full bg-zinc-950 border border-white/5 group-hover:border-cyan-500/30 group-hover:bg-cyan-500/5 transition-all text-zinc-400 group-hover:text-cyan-400 shrink-0">
-          {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+        <span className={`text-[15px] font-semibold leading-6 transition-all flex-1 ${
+          isOpen ? "text-cyan-400" : "text-white group-hover:text-cyan-400"
+        }`}>
+          {question}
         </span>
       </button>
       
@@ -31,7 +42,7 @@ function FAQAccordionItem({ question, answer, isOpen, onToggle }: { question: st
             exit={{ height: 0, opacity: 0, transition: { height: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.15 } } }}
             className="overflow-hidden"
           >
-            <p className="text-gray-400 font-light text-sm leading-relaxed pb-4 pr-6">
+            <p className="text-zinc-400 font-normal text-[14px] leading-relaxed px-6 pb-5">
               {answer}
             </p>
           </motion.div>
@@ -132,7 +143,7 @@ export default function FAQPage() {
           {filteredFaqs.length > 0 ? (
             <motion.div
               layout
-              className="bg-zinc-950/40 border border-white/5 rounded-3xl p-8 md:p-12"
+              className="flex flex-col -space-y-px"
             >
               {filteredFaqs.map((faq, idx) => (
                 <FAQAccordionItem

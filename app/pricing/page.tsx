@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { AppProviders } from "@/components/layout/app-providers";
 import { Footer } from "@/components/layout/footer";
 import Link from "next/link";
-import { DollarSign, Check, HelpCircle, ArrowRight } from "lucide-react";
+import { DollarSign, Check, HelpCircle, ArrowRight, Plus } from "lucide-react";
 import { BreadcrumbSchema } from "@/lib/seo/json-ld";
 import { Button } from "@/components/ui/Button";
 
@@ -71,7 +71,7 @@ export default function PricingPage() {
         </section>
 
         {/* Branch Toggle sticky */}
-        <section className="py-8 sticky top-[80px] z-50 bg-black/80 backdrop-blur-md border-y border-white/5">
+        <section className="py-4 md:py-8 sticky top-[80px] z-50 bg-black/80 backdrop-blur-md border-y border-white/5">
           <div className="max-w-md mx-auto px-6 flex justify-center">
             <div className="bg-zinc-950 p-1 rounded-full border border-white/10 flex w-full">
               <button
@@ -132,12 +132,14 @@ export default function PricingPage() {
               </div>
 
               {/* Color Add-on Badge card */}
-              <div className="mt-8 bg-cyan-500/5 border border-cyan-500/20 rounded-2xl p-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center shrink-0">
-                  <span className="text-cyan-400 text-xl font-bold">+</span>
+              <div className="mt-8 bg-cyan-500/5 border border-cyan-500/20 rounded-2xl p-6 flex flex-col gap-3.5">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center shrink-0">
+                    <Plus className="w-4.5 h-4.5 text-cyan-400" />
+                  </div>
+                  <h4 className="text-sm font-semibold tracking-wider uppercase text-white leading-snug"><span className="whitespace-nowrap">Color Pigment</span> <br /> Add-on</h4>
                 </div>
-                <div>
-                  <h4 className="text-sm font-semibold tracking-wider uppercase text-white mb-1">Color Pigment Add-on</h4>
+                <div className="pl-0 sm:pl-14">
                   <p className="text-zinc-400 font-light text-xs leading-relaxed">
                     Vibrant custom colors require additional pigment layers and needle packing. Adds +20% to the base design cost.
                   </p>
