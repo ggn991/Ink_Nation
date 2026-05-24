@@ -126,7 +126,7 @@ export function GalleryContent({ initialType = "tattoos" }: { initialType?: "tat
         {/* Category Toggle Switcher */}
         <section className="py-6 bg-zinc-950/30 border-y border-white/5">
           <div className="max-w-xl mx-auto px-6 flex justify-center">
-            <div className="bg-zinc-950 p-1 rounded-full border border-white/10 flex w-full">
+            <div className="bg-zinc-950 p-1 rounded-full border border-white/10 flex overflow-x-auto scrollbar-none max-w-full w-max mx-auto md:w-full md:max-w-xl">
               {mainTabs.map((tab) => (
                 <button
                   key={tab.id}
@@ -135,7 +135,7 @@ export function GalleryContent({ initialType = "tattoos" }: { initialType?: "tat
                     setActiveStyle("All");
                     setSelectedItem(null);
                   }}
-                  className={`flex-1 py-2.5 text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold rounded-full transition-all duration-300 cursor-pointer ${
+                  className={`flex-shrink-0 md:flex-1 px-5 py-2.5 text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold rounded-full transition-all duration-300 cursor-pointer ${
                     activeType === tab.id 
                       ? "bg-cyan-500 text-black shadow-lg shadow-cyan-500/25" 
                       : "text-zinc-400 hover:text-white"
@@ -149,8 +149,8 @@ export function GalleryContent({ initialType = "tattoos" }: { initialType?: "tat
         </section>
 
         {/* Horizontal style tags filter strip */}
-        <section className="py-6 border-b border-white/5 overflow-x-auto whitespace-nowrap scrollbar-hide px-6">
-          <div className="max-w-5xl mx-auto flex gap-2 sm:justify-center">
+        <section className="py-6 border-b border-white/5 overflow-x-auto whitespace-nowrap scrollbar-hide">
+          <div className="max-w-5xl mx-auto flex gap-2 sm:justify-center px-6 w-max min-w-full">
             {styleTags.map((style) => (
               <button
                 key={style}
@@ -254,16 +254,16 @@ export function GalleryContent({ initialType = "tattoos" }: { initialType?: "tat
                     <p className="text-zinc-500 text-xs mt-1 uppercase tracking-widest">Category: {selectedItem.type === "nail-art" ? "Nail Art" : selectedItem.type === "removal" ? "Removal/Rework" : selectedItem.type}</p>
                   </div>
                   
-                  <div className="flex gap-4">
+                  <div className="flex gap-3">
                     <button 
                       onClick={() => handleShare(selectedItem)}
-                      className="px-5 py-3 bg-zinc-900 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center gap-2"
+                      className="px-4 py-2.5 bg-zinc-900 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center gap-2 whitespace-nowrap"
                     >
                       {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
-                      <span>{copied ? "Link Copied!" : "Share Link"}</span>
+                      <span>{copied ? "Link Copied!" : "Share"}</span>
                     </button>
                     <Link href="/booking" onClick={() => setSelectedItem(null)}>
-                      <button className="bg-white text-black px-6 py-3 rounded-full font-extrabold uppercase tracking-widest text-[10px] hover:bg-[#00f0ff] hover:text-black transition-all duration-300 cursor-pointer border border-white hover:border-[#00f0ff]">
+                      <button className="bg-white text-black px-5 py-2.5 rounded-full font-extrabold uppercase tracking-widest text-[10px] hover:bg-[#00f0ff] hover:text-black transition-all duration-300 cursor-pointer border border-white hover:border-[#00f0ff] whitespace-nowrap">
                         GET INKED
                       </button>
                     </Link>

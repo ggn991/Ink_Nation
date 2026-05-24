@@ -76,23 +76,23 @@ export default function PricingPage() {
             <div className="bg-zinc-950 p-1 rounded-full border border-white/10 flex w-full">
               <button
                 onClick={() => setActiveBranch("bangalore")}
-                className={`flex-1 py-3 text-xs tracking-widest uppercase font-semibold rounded-full transition-all duration-300 cursor-pointer ${
+                className={`flex-1 py-2.5 sm:py-3 text-[10px] sm:text-xs tracking-wider sm:tracking-widest uppercase font-semibold rounded-full transition-all duration-300 cursor-pointer whitespace-nowrap ${
                   activeBranch === "bangalore" 
                     ? "bg-cyan-500 text-black shadow-lg shadow-cyan-500/25" 
                     : "text-zinc-400 hover:text-white"
                 }`}
               >
-                Bangalore Studio
+                Bangalore <span className="hidden sm:inline">Studio</span>
               </button>
               <button
                 onClick={() => setActiveBranch("mysore")}
-                className={`flex-1 py-3 text-xs tracking-widest uppercase font-semibold rounded-full transition-all duration-300 cursor-pointer ${
+                className={`flex-1 py-2.5 sm:py-3 text-[10px] sm:text-xs tracking-wider sm:tracking-widest uppercase font-semibold rounded-full transition-all duration-300 cursor-pointer whitespace-nowrap ${
                   activeBranch === "mysore" 
                     ? "bg-cyan-500 text-black shadow-lg shadow-cyan-500/25" 
                     : "text-zinc-400 hover:text-white"
                 }`}
               >
-                Mysore Studio
+                Mysore <span className="hidden sm:inline">Studio</span>
               </button>
             </div>
           </div>
@@ -107,13 +107,13 @@ export default function PricingPage() {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-zinc-950 border border-white/5 rounded-3xl p-8 md:p-12 relative overflow-hidden group hover:border-zinc-800 transition-all duration-500"
+              className="bg-zinc-950 border border-white/5 rounded-3xl p-6 md:p-12 relative overflow-hidden group hover:border-zinc-800 transition-all duration-500"
             >
               <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/[0.02] rounded-full blur-3xl pointer-events-none"></div>
               
-              <h2 className="text-3xl font-light uppercase tracking-widest text-white mb-8 flex items-center justify-between">
+              <h2 className="text-2xl sm:text-3xl font-light uppercase tracking-widest text-white mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 items-start">
                 <span>Tattoo Pricing</span>
-                <span className="text-xs text-cyan-400 border border-cyan-400/20 bg-cyan-400/5 px-3 py-1 rounded-full font-medium tracking-normal normal-case">
+                <span className="text-xs text-cyan-400 border border-cyan-400/20 bg-cyan-400/5 px-3 py-1 rounded-full font-medium tracking-normal normal-case whitespace-nowrap">
                   Starting rates
                 </span>
               </h2>
@@ -132,7 +132,7 @@ export default function PricingPage() {
               </div>
 
               {/* Color Add-on Badge card */}
-              <div className="mt-8 bg-cyan-500/5 border border-cyan-500/20 rounded-2xl p-6 flex gap-4 items-center">
+              <div className="mt-8 bg-cyan-500/5 border border-cyan-500/20 rounded-2xl p-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                 <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center shrink-0">
                   <span className="text-cyan-400 text-xl font-bold">+</span>
                 </div>
@@ -150,13 +150,13 @@ export default function PricingPage() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-zinc-950 border border-white/5 rounded-3xl p-8 md:p-12 relative overflow-hidden group hover:border-zinc-800 transition-all duration-500"
+              className="bg-zinc-950 border border-white/5 rounded-3xl p-6 md:p-12 relative overflow-hidden group hover:border-zinc-800 transition-all duration-500"
             >
               <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/[0.02] rounded-full blur-3xl pointer-events-none"></div>
 
-              <h2 className="text-3xl font-light uppercase tracking-widest text-white mb-8 flex items-center justify-between">
+              <h2 className="text-2xl sm:text-3xl font-light uppercase tracking-widest text-white mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 items-start">
                 <span>Body Piercings</span>
-                <span className="text-xs text-cyan-400 border border-cyan-400/20 bg-cyan-400/5 px-3 py-1 rounded-full font-medium tracking-normal normal-case">
+                <span className="text-xs text-cyan-400 border border-cyan-400/20 bg-cyan-400/5 px-3 py-1 rounded-full font-medium tracking-normal normal-case whitespace-nowrap">
                   Sterile Needle Only
                 </span>
               </h2>

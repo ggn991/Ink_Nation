@@ -99,31 +99,23 @@ export default function ArtistDetailPage({ params }: { params: Promise<{ slug: s
                 {artist.bio}
               </p>
 
-              <div className="flex flex-wrap gap-4 pt-4">
+              <div className="flex flex-wrap gap-3 pt-4">
                 <a href={`https://instagram.com/${artist.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer">
-                  <button className="px-6 py-3 bg-zinc-950 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center gap-2">
-                    <InstagramIcon className="w-4 h-4" />
+                  <button className="px-4 sm:px-6 py-2.5 sm:py-3 bg-zinc-950 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center gap-2 whitespace-nowrap">
+                    <InstagramIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     <span>{artist.instagram}</span>
                   </button>
                 </a>
 
                 <button 
                   onClick={handleShare}
-                  className="px-6 py-3 bg-zinc-950 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center gap-2"
+                  className="px-4 sm:px-6 py-2.5 sm:py-3 bg-zinc-950 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center gap-2 whitespace-nowrap"
                 >
-                  {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
+                  {copied ? <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                   <span>{copied ? "Link Copied!" : "Share Profile"}</span>
                 </button>
               </div>
 
-              <div className="pt-6 border-t border-white/5">
-                <Link href="/booking">
-                  <button className="bg-white text-black px-8 py-4 rounded-full font-semibold uppercase tracking-widest text-xs hover:bg-cyan-400 hover:text-black transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer inline-flex items-center gap-2 border border-white hover:border-cyan-400">
-                    <span>Book Session with {artist.name}</span>
-                    <Calendar className="w-4 h-4" />
-                  </button>
-                </Link>
-              </div>
             </div>
 
           </div>

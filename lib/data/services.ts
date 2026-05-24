@@ -44,7 +44,7 @@ export const services: Service[] = [
     description: "Experience professional body modifications performed in absolute sterile environments. We utilize ultra-sharp, single-use surgical needles and stock only the highest grade biocompatible titanium and solid gold jewelry to ensure safe, comfortable healing.",
     isAvailable: true,
     isComingSoon: false,
-    ctaText: "GET INKED",
+    ctaText: "GET PIERCED",
     icon: "Sparkles",
     priceStart: "₹800",
     details: [

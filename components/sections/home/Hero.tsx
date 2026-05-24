@@ -51,7 +51,7 @@ export const Hero = () => {
   const activeAnnouncement = announcements[tickerIndex];
 
   return (
-    <section className="relative min-h-screen bg-[#0A0A0A] flex flex-col justify-between overflow-hidden select-none">
+    <section className="relative min-h-dvh bg-[#0A0A0A] flex flex-col justify-between overflow-hidden select-none">
       
       {/* Noise Texture Overlay */}
       <div 

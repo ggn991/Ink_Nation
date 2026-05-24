@@ -108,13 +108,15 @@ export const ContactSection = () => {
             className="lg:col-span-5 space-y-8"
           >
             {/* Bangalore Studio card */}
-            <div className="bg-zinc-950 p-8 border border-white/5 rounded-3xl hover:border-zinc-800 transition-all duration-500 relative group">
-              <div className="absolute top-8 right-8 flex items-center gap-1.5 bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full text-xs font-medium border border-cyan-500/20">
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <span>4.8</span>
-                <span className="text-cyan-400/60 font-light text-[10px]">(1,200+)</span>
+            <div className="bg-zinc-950 p-6 sm:p-8 border border-white/5 rounded-3xl hover:border-zinc-800 transition-all duration-500 relative group">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <h3 className="text-2xl font-light uppercase tracking-widest text-white">Bangalore Studio</h3>
+                <div className="flex items-center gap-1.5 bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full text-xs font-medium border border-cyan-500/20 w-max">
+                  <Star className="w-3.5 h-3.5 fill-current" />
+                  <span>4.8</span>
+                  <span className="text-cyan-400/60 font-light text-[10px]">(1,200+)</span>
+                </div>
               </div>
-              <h3 className="text-2xl font-light uppercase tracking-widest text-white mb-6">Bangalore Studio</h3>
               
               {/* Interactive map */}
               <div className="w-full h-48 rounded-2xl overflow-hidden border border-white/10 mb-6 relative group">
@@ -170,7 +172,7 @@ export const ContactSection = () => {
                     href="https://wa.me/918735097898"
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex-1 text-center py-2.5 bg-zinc-900 border border-white/10 hover:border-cyan-400 hover:text-cyan-400 hover:bg-cyan-500/5 text-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300"
+                    className="flex-1 text-center py-2.5 bg-emerald-600 border border-emerald-600 text-white hover:bg-emerald-500 sm:bg-zinc-900 sm:border-white/10 sm:text-white sm:hover:border-cyan-400 sm:hover:text-cyan-400 sm:hover:bg-cyan-500/5 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap"
                   >
                     WhatsApp
                   </a>
@@ -179,13 +181,15 @@ export const ContactSection = () => {
             </div>
 
             {/* Mysore Studio card */}
-            <div className="bg-zinc-950 p-8 border border-white/5 rounded-3xl hover:border-zinc-800 transition-all duration-500 relative group">
-              <div className="absolute top-8 right-8 flex items-center gap-1.5 bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full text-xs font-medium border border-cyan-500/20">
-                <Star className="w-3.5 h-3.5 fill-current" />
-                <span>5.0</span>
-                <span className="text-cyan-400/60 font-light text-[10px]">(650+)</span>
+            <div className="bg-zinc-950 p-6 sm:p-8 border border-white/5 rounded-3xl hover:border-zinc-800 transition-all duration-500 relative group">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <h3 className="text-2xl font-light uppercase tracking-widest text-white">Mysore Studio</h3>
+                <div className="flex items-center gap-1.5 bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full text-xs font-medium border border-cyan-500/20 w-max">
+                  <Star className="w-3.5 h-3.5 fill-current" />
+                  <span>5.0</span>
+                  <span className="text-cyan-400/60 font-light text-[10px]">(650+)</span>
+                </div>
               </div>
-              <h3 className="text-2xl font-light uppercase tracking-widest text-white mb-6">Mysore Studio</h3>
               
               {/* Interactive map */}
               <div className="w-full h-48 rounded-2xl overflow-hidden border border-white/10 mb-6 relative group">
@@ -241,7 +245,7 @@ export const ContactSection = () => {
                     href="https://wa.me/918735097898"
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex-1 text-center py-2.5 bg-zinc-900 border border-white/10 hover:border-cyan-400 hover:text-cyan-400 hover:bg-cyan-500/5 text-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300"
+                    className="flex-1 text-center py-2.5 bg-emerald-600 border border-emerald-600 text-white hover:bg-emerald-500 sm:bg-zinc-900 sm:border-white/10 sm:text-white sm:hover:border-cyan-400 sm:hover:text-cyan-400 sm:hover:bg-cyan-500/5 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap"
                   >
                     WhatsApp
                   </a>
@@ -414,10 +418,17 @@ export const ContactSection = () => {
                     type="submit"
                     variant="primary"
                     disabled={loading}
-                    className="w-full sm:w-auto px-10"
+                    className="w-full sm:w-auto px-6 sm:px-10 py-2.5 sm:py-3 whitespace-nowrap text-[9px] sm:text-[10px]"
                   >
-                    <span>{loading ? "Sending Enquiry..." : "Send Consultation Enquiry"}</span>
-                    {!loading && <Send className="w-4 h-4 shrink-0" />}
+                    <span>
+                      {loading ? "Sending..." : (
+                        <>
+                          <span className="inline sm:hidden">Send Enquiry</span>
+                          <span className="hidden sm:inline">Send Consultation Enquiry</span>
+                        </>
+                      )}
+                    </span>
+                    {!loading && <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />}
                   </Button>
                 </div>
               </form>

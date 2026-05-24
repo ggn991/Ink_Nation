@@ -90,13 +90,13 @@ export const Navbar = () => {
   return (
     <>
       {/* Floating Capsule Header Wrapper */}
-      <div className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] max-w-7xl z-[9999] pointer-events-none select-none">
-        <header className="pointer-events-auto w-full bg-black/60 backdrop-blur-md border border-white/10 rounded-full py-2 pl-5 pr-2 md:pl-6 md:pr-3 flex items-center justify-between shadow-[0_12px_40px_rgba(0,0,0,0.7)] transition-all duration-300">
+      <div className="fixed top-4 md:top-6 left-4 sm:left-6 right-4 sm:right-6 max-w-7xl mx-auto z-[9999] pointer-events-none select-none">
+        <header className="pointer-events-auto w-full bg-black/60 backdrop-blur-md border border-white/10 rounded-full py-2 pl-3.5 pr-1.5 sm:pl-5 sm:pr-2 md:pl-6 md:pr-3 flex items-center justify-between shadow-[0_12px_40px_rgba(0,0,0,0.7)] transition-all duration-300">
 
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center text-sm md:text-base font-light tracking-[0.25em] uppercase text-white hover:text-[#00f0ff] transition-colors duration-300"
+            className="flex items-center text-xs sm:text-sm md:text-base font-light tracking-wider sm:tracking-[0.25em] uppercase text-white hover:text-[#00f0ff] transition-colors duration-300"
           >
             Ink <span className="font-extrabold text-[#00f0ff] ml-1">Nation</span>
           </Link>
@@ -165,10 +165,10 @@ export const Navbar = () => {
           </nav>
 
           {/* Right Action Trigger Buttons */}
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
             <Link href="/booking">
               <button
-                className="px-4 py-2.5 md:px-6 md:py-3 bg-white text-black font-extrabold text-[9px] md:text-[10px] tracking-widest uppercase rounded-full hover:bg-[#00f0ff] hover:text-black border border-white hover:border-[#00f0ff] transition-all duration-300 active:scale-95 cursor-pointer shadow-md"
+                className="px-2.5 py-2 sm:px-4 sm:py-2.5 md:px-6 md:py-3 bg-white text-black font-extrabold text-[8px] sm:text-[9px] md:text-[10px] tracking-widest uppercase rounded-full hover:bg-[#00f0ff] hover:text-black border border-white hover:border-[#00f0ff] transition-all duration-300 active:scale-95 cursor-pointer shadow-md"
               >
                 GET INKED
               </button>
@@ -177,19 +177,19 @@ export const Navbar = () => {
             {/* Floating Hamburger Toggle Button (Shown on mobile & hidden on desktop) */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden w-10 h-10 md:w-11 md:h-11 flex flex-col justify-center items-center gap-1 bg-zinc-900 border border-white/5 rounded-full hover:border-[#00f0ff]/50 transition-colors duration-300 focus:outline-none cursor-pointer group"
+              className="lg:hidden w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 flex flex-col justify-center items-center gap-1 bg-zinc-900 border border-white/5 rounded-full hover:border-[#00f0ff]/50 transition-colors duration-300 focus:outline-none cursor-pointer group"
               aria-label={isOpen ? "Close Menu" : "Open Menu"}
             >
               <span
-                className={`w-4 h-[2px] bg-white transition-all duration-300 ${isOpen ? "rotate-45 translate-y-[6px]" : "group-hover:bg-[#00f0ff]"
+                className={`w-3.5 sm:w-4 h-[2px] bg-white transition-all duration-300 ${isOpen ? "rotate-45 translate-y-[6px]" : "group-hover:bg-[#00f0ff]"
                   }`}
               />
               <span
-                className={`w-4 h-[2px] bg-white transition-all duration-300 ${isOpen ? "opacity-0" : "group-hover:bg-[#00f0ff]"
+                className={`w-3.5 sm:w-4 h-[2px] bg-white transition-all duration-300 ${isOpen ? "opacity-0" : "group-hover:bg-[#00f0ff]"
                   }`}
               />
               <span
-                className={`w-4 h-[2px] bg-white transition-all duration-300 ${isOpen ? "-rotate-45 -translate-y-[6px]" : "group-hover:bg-[#00f0ff]"
+                className={`w-3.5 sm:w-4 h-[2px] bg-white transition-all duration-300 ${isOpen ? "-rotate-45 -translate-y-[6px]" : "group-hover:bg-[#00f0ff]"
                   }`}
               />
             </button>
@@ -201,7 +201,7 @@ export const Navbar = () => {
       {/* Fullscreen Sliding Overlay Nav */}
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[9998] bg-[#0A0A0A] w-full h-screen transform -translate-y-full flex flex-col justify-between p-8 md:p-20 overflow-hidden"
+        className="fixed inset-0 z-[9998] bg-[#0A0A0A] w-full h-dvh transform -translate-y-full flex flex-col justify-between p-6 sm:p-8 md:p-20 overflow-y-auto lg:overflow-hidden"
       >
         {/* Sleek accent color glow */}
         <div className="absolute top-[20%] left-[20%] w-[350px] h-[350px] bg-[#00f0ff]/5 rounded-full blur-[120px] pointer-events-none" />
@@ -301,14 +301,6 @@ export const Navbar = () => {
           </div>
 
           <div className="flex flex-col md:items-end justify-center">
-            <Link href="/booking">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-8 py-3.5 bg-white text-[#00f0ff] font-extrabold text-[10px] tracking-widest uppercase rounded-full hover:bg-[#00f0ff] hover:text-black border border-white hover:border-[#00f0ff] transition-all duration-300 active:scale-95 cursor-pointer shadow-lg"
-              >
-                GET INKED
-              </button>
-            </Link>
             <span className="text-[9px] tracking-widest text-[#00f0ff] uppercase mt-2 font-mono font-medium">
               ★ Bangalore 4.8 | Mysore 5.0 ★
             </span>

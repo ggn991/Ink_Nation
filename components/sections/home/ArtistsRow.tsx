@@ -6,16 +6,18 @@ import Link from "next/link";
 import { artists } from "@/lib/data/artists";
 import { SectionHeading } from "@/components/sections/shared/SectionHeading";
 import { Button } from "@/components/ui/Button";
-import { gsap } from "@/lib/utils/animations";
+import { gsap, ScrollTrigger } from "@/lib/utils/animations";
 
 export const ArtistsRow = () => {
   const cardsRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   // Distort target SVG filters on hover - Clear on Hover
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>, filterId: string) => {
     const filterEl = document.getElementById(filterId);
     if (!filterEl) return;
-    
+
     const displacement = filterEl.querySelector("feDisplacementMap");
     if (displacement) {
       gsap.to(displacement, {
@@ -40,26 +42,123 @@ export const ArtistsRow = () => {
     }
   };
 
+  // dynamic scroll and GSAP scroll pinning similar to gsap.com on mobile viewports
+  useEffect(() => {
+    const section = sectionRef.current;
+    const container = cardsRef.current;
+    const track = trackRef.current;
+    if (!section || !container || !track) return;
+
+    const mm = gsap.matchMedia();
+
+    const isMobile = () => typeof window !== "undefined" && window.innerWidth < 1024;
+
+    const updateFocusState = () => {
+      if (!isMobile()) return;
+      const cards = container.querySelectorAll(".artist-card");
+      const containerWidth = container.offsetWidth;
+      const rect = container.getBoundingClientRect();
+      const containerCenter = rect.left + containerWidth / 2;
+
+      cards.forEach((cardEl) => {
+        const card = cardEl as HTMLDivElement;
+        const cardWidth = card.offsetWidth;
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardWidth / 2;
+        const distance = Math.abs(cardCenter - containerCenter);
+
+        const maxDistance = containerWidth / 2;
+        const ratio = Math.min(distance / maxDistance, 1);
+
+        const scale = 1 - ratio * 0.1;
+        const opacity = 1 - ratio * 0.55;
+
+        gsap.to(card, {
+          scale: scale,
+          opacity: opacity,
+          duration: 0.25,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      });
+    };
+
+    mm.add("(max-width: 1023px)", () => {
+      // 1. Force horizontal layout to be clipped (scroll driven by GSAP trigger)
+      container.style.overflowX = "hidden";
+      container.classList.remove("overflow-x-auto");
+
+      const getScrollAmount = () => {
+        return track.scrollWidth - container.offsetWidth;
+      };
+
+      // 2. Pin the section and translate the container horizontally on scroll
+      const trigger = ScrollTrigger.create({
+        trigger: section,
+        pin: true,
+        scrub: 1,
+        start: "top -200px",
+        end: () => `+=${getScrollAmount()}`,
+        invalidateOnRefresh: true,
+        onUpdate: () => {
+          updateFocusState();
+        }
+      });
+
+      gsap.to(track, {
+        x: () => -getScrollAmount(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          scrub: 1,
+          start: "top -200px",
+          end: () => `+=${getScrollAmount()}`,
+          invalidateOnRefresh: true,
+        }
+      });
+
+      return () => {
+        // Revert styles and clear all GSAP inline scale/opacity properties
+        container.style.overflowX = "";
+        gsap.set(track, { x: 0 });
+        const cards = container.querySelectorAll(".artist-card");
+        gsap.set(cards, { scale: 1, opacity: 1, clearProps: "all" });
+        trigger.kill();
+      };
+    });
+
+    updateFocusState();
+
+    container.addEventListener("scroll", updateFocusState, { passive: true });
+    window.addEventListener("resize", updateFocusState, { passive: true });
+
+    return () => {
+      mm.revert();
+      container.removeEventListener("scroll", updateFocusState);
+      window.removeEventListener("resize", updateFocusState);
+    };
+  }, []);
+
   return (
-    <section className="bg-[#050505] py-24 md:py-32 px-6 md:px-12 border-t border-white/5 relative overflow-hidden select-none">
-      
+    <section ref={sectionRef} className="bg-[#050505] py-24 md:py-32 px-6 md:px-12 border-t border-white/5 relative overflow-hidden select-none">
+
       {/* Dynamic SVG Distortion Filters (Splatter displacement) */}
       <svg className="absolute w-0 h-0 pointer-events-none">
         <defs>
           {artists.map((artist) => (
             <filter id={`ink-splatter-${artist.id}`} key={artist.id}>
-              <feTurbulence 
-                type="fractalNoise" 
-                baseFrequency="0.04" 
-                numOctaves="2" 
-                result="noise" 
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.04"
+                numOctaves="2"
+                result="noise"
               />
-              <feDisplacementMap 
-                in="SourceGraphic" 
-                in2="noise" 
-                scale="35" 
-                xChannelSelector="R" 
-                yChannelSelector="G" 
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="noise"
+                scale="35"
+                xChannelSelector="R"
+                yChannelSelector="G"
               />
             </filter>
           ))}
@@ -70,11 +169,11 @@ export const ArtistsRow = () => {
       <div className="absolute top-[20%] left-[-10%] w-[350px] h-[350px] bg-[#00f0ff]/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <SectionHeading 
-            titleLine1="MEET THE" 
-            titleLine2="INK MASTERS" 
-            subtitle="THE CREW" 
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 lg:mb-16 gap-6">
+          <SectionHeading
+            titleLine1="MEET THE"
+            titleLine2="INK MASTERS"
+            subtitle="THE CREW"
           />
           <div className="shrink-0 pt-4 md:pt-0">
             <Link href="/artists">
@@ -86,20 +185,24 @@ export const ArtistsRow = () => {
         </div>
 
         {/* 5-Card Row: Mobile Swipe / Desktop Grid */}
-        <div 
+        <div
           ref={cardsRef}
-          className="flex overflow-x-auto lg:grid lg:grid-cols-5 gap-6 snap-x snap-mandatory scrollbar-none pb-8 -mx-6 px-6 lg:mx-0 lg:px-0"
+          className="overflow-x-auto lg:overflow-x-visible pb-8 -mx-6 px-6 lg:mx-0 lg:px-0 scrollbar-none"
         >
+          <div
+            ref={trackRef}
+            className="flex lg:grid lg:grid-cols-5 gap-6 snap-x snap-mandatory scroll-pl-6"
+          >
           {artists.map((artist, idx) => (
             <div
               key={artist.id}
               onMouseEnter={(e) => handleMouseEnter(e, `ink-splatter-${artist.id}`)}
               onMouseLeave={(e) => handleMouseLeave(e, `ink-splatter-${artist.id}`)}
-              className="snap-start shrink-0 w-[280px] sm:w-[320px] lg:w-auto bg-zinc-950/80 border border-white/5 p-5 rounded-2xl flex flex-col justify-between hover:border-[#00f0ff]/30 hover:shadow-[0_0_30px_rgba(0,240,255,0.05)] transition-all duration-300 relative overflow-hidden group"
+              className="artist-card snap-start shrink-0 w-[280px] sm:w-[320px] lg:w-auto bg-zinc-950/80 border border-white/5 p-5 rounded-2xl flex flex-col justify-between hover:border-[#00f0ff]/30 hover:shadow-[0_0_30px_rgba(0,240,255,0.05)] transition-all duration-300 relative overflow-hidden group"
             >
               <div>
                 {/* Visual Artist frame */}
-                <div 
+                <div
                   className="relative w-full aspect-square rounded-xl overflow-hidden mb-5 border border-white/5 transition-all duration-500"
                   style={{
                     filter: `url(#ink-splatter-${artist.id})`
@@ -129,7 +232,7 @@ export const ArtistsRow = () => {
                 {/* 3 Portfolio preview thumbs (layered slightly) */}
                 <div className="flex space-x-2.5 mb-6">
                   {artist.portfolio.slice(0, 3).map((work, wIdx) => (
-                    <div 
+                    <div
                       key={work.id}
                       className="relative w-12 h-12 rounded-lg overflow-hidden border border-white/10 flex-shrink-0"
                     >
@@ -147,7 +250,7 @@ export const ArtistsRow = () => {
 
               {/* Action row */}
               <div className="flex justify-between items-center border-t border-white/5 pt-4">
-                <a 
+                <a
                   href={`https://instagram.com/${artist.instagram.replace('@', '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -161,7 +264,7 @@ export const ArtistsRow = () => {
                   <span>{artist.instagram}</span>
                 </a>
 
-                <Link 
+                <Link
                   href={`/artists/${artist.slug}`}
                   className="text-[#00f0ff] text-[9px] font-mono tracking-widest uppercase hover:underline cursor-pointer"
                 >
@@ -170,7 +273,9 @@ export const ArtistsRow = () => {
               </div>
 
             </div>
-          ))}
+            ))}
+            <div className="w-6 shrink-0 lg:hidden" />
+          </div>
         </div>
 
       </div>

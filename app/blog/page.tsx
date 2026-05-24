@@ -68,10 +68,10 @@ export default function BlogIndexPage() {
 
                 {/* Content Column */}
                 <div className="lg:col-span-5 p-8 md:p-12 flex flex-col justify-center space-y-6">
-                  <div className="flex items-center gap-4 text-zinc-500 text-xs font-mono uppercase tracking-wider">
+                  <div className="flex items-center gap-2 sm:gap-4 text-zinc-500 text-[10px] sm:text-xs font-mono uppercase tracking-wider">
                     <span className="text-cyan-400 font-semibold">{featuredPost.category}</span>
                     <span>•</span>
-                    <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {featuredPost.readTime}</span>
+                    <span className="flex items-center gap-1 whitespace-nowrap"><Clock className="w-3.5 h-3.5" /> {featuredPost.readTime}</span>
                   </div>
 
                   <h2 className="text-2xl md:text-4xl font-light uppercase tracking-wide text-white group-hover:text-cyan-400 transition-colors leading-tight">
@@ -82,19 +82,19 @@ export default function BlogIndexPage() {
                     {featuredPost.summary}
                   </p>
 
-                  <div className="flex items-center justify-between pt-6 border-t border-white/5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-cyan-900/20 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                  <div className="flex items-center justify-between pt-6 border-t border-white/5 gap-4">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-8 h-8 rounded-full bg-cyan-900/20 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
                         <User className="w-4 h-4" />
                       </div>
-                      <div>
-                        <h4 className="text-xs font-semibold text-white">{featuredPost.author}</h4>
+                      <div className="min-w-0">
+                        <h4 className="text-xs font-semibold text-white truncate max-w-[140px] sm:max-w-none">{featuredPost.author}</h4>
                         <p className="text-[10px] text-zinc-500 font-mono">{featuredPost.date}</p>
                       </div>
                     </div>
 
-                    <Link href={`/blog/${featuredPost.slug}`}>
-                      <button className="h-10 w-10 rounded-full bg-white text-black flex items-center justify-center hover:bg-cyan-400 hover:text-black transition-all duration-300 transform group-hover:translate-x-1 cursor-pointer">
+                    <Link href={`/blog/${featuredPost.slug}`} className="shrink-0">
+                      <button className="h-10 w-10 rounded-full bg-white text-black flex items-center justify-center hover:bg-cyan-400 hover:text-black transition-all duration-300 transform group-hover:translate-x-1 cursor-pointer shrink-0">
                         <ArrowRight className="w-4 h-4" />
                       </button>
                     </Link>

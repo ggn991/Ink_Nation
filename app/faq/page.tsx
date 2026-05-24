@@ -105,8 +105,8 @@ export default function FAQPage() {
 
         {/* Categories toggler */}
         {!searchQuery && (
-          <section className="py-6 border-y border-white/5 bg-zinc-950/30 overflow-x-auto whitespace-nowrap scrollbar-hide px-6">
-            <div className="max-w-5xl mx-auto flex justify-start md:justify-center gap-2">
+          <section className="py-6 border-y border-white/5 bg-zinc-950/30 overflow-x-auto whitespace-nowrap scrollbar-hide">
+            <div className="max-w-5xl mx-auto flex justify-start md:justify-center gap-2 px-6 w-max min-w-full">
               {faqCategories.map((category) => (
                 <button
                   key={category}

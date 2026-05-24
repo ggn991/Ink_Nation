@@ -9,13 +9,30 @@ import Link from "next/link";
 import { Star, Eye, Mail, ArrowRight } from "lucide-react";
 import { BreadcrumbSchema } from "@/lib/seo/json-ld";
 
+const artistTabs = [
+  { id: "tattoos", label: "Tattoos" },
+  { id: "piercings", label: "Piercings" },
+  { id: "nail-art", label: "Nail Art" }
+];
+
 export default function ArtistsPage() {
   const [hoveredArtist, setHoveredArtist] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"tattoos" | "piercings" | "nail-art">("tattoos");
 
   const breadcrumbs = [
     { name: "Home", item: "/" },
     { name: "Artists", item: "/artists" }
   ];
+
+  const filteredArtists = artists.filter((artist) => {
+    if (activeTab === "piercings") {
+      return artist.id === "ricky";
+    }
+    if (activeTab === "nail-art") {
+      return artist.id === "meera";
+    }
+    return artist.id !== "ricky" && artist.id !== "meera";
+  });
 
   return (
     <AppProviders>
@@ -42,10 +59,33 @@ export default function ArtistsPage() {
           </div>
         </section>
 
+        {/* Category Toggle Switcher */}
+        <section className="py-6 bg-zinc-950/30 border-y border-white/5">
+          <div className="max-w-md mx-auto px-6 flex justify-center">
+            <div className="bg-zinc-950 p-1 rounded-full border border-white/10 flex w-full">
+              {artistTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setActiveTab(tab.id as any);
+                  }}
+                  className={`flex-1 px-1 sm:px-4 py-2.5 text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase font-semibold rounded-full transition-all duration-300 cursor-pointer whitespace-nowrap ${
+                    activeTab === tab.id 
+                      ? "bg-cyan-500 text-black shadow-lg shadow-cyan-500/25" 
+                      : "text-zinc-400 hover:text-white"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Master Artists Grid */}
         <section className="py-20 px-6 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {artists.map((artist, idx) => (
+            {filteredArtists.map((artist, idx) => (
               <motion.div
                 key={artist.id}
                 initial={{ opacity: 0, y: 40 }}

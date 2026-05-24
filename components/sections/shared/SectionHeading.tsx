@@ -19,8 +19,8 @@ const HeadingLine: React.FC<{
 }> = ({ text, colorClass, center, size = "default" }) => {
   const wordsArray = text.split(" ");
   const sizeClasses = size === "small"
-    ? "text-[1.8rem] sm:text-[2.6rem] md:text-[3.8rem] lg:text-[4.5rem] xl:text-[5rem]"
-    : "text-[2.2rem] sm:text-[3.5rem] md:text-[5.2rem] lg:text-[7rem] xl:text-[8rem]";
+    ? "text-[1.5rem] sm:text-[2.6rem] md:text-[3.8rem] lg:text-[4.5rem] xl:text-[5rem]"
+    : "text-[1.8rem] sm:text-[3.5rem] md:text-[5.2rem] lg:text-[7rem] xl:text-[8rem]";
   
   return (
     <div className={`grid grid-cols-1 grid-rows-1 ${center ? "justify-items-center text-center" : "justify-items-start text-left"} w-full`}>
