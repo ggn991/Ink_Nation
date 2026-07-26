@@ -100,13 +100,6 @@ export default function ArtistDetailPage({ params }: { params: Promise<{ slug: s
               </p>
 
               <div className="flex flex-wrap gap-3 pt-4">
-                <a href={`https://instagram.com/${artist.instagram.replace('@', '')}`} target="_blank" rel="noopener noreferrer">
-                  <button className="px-4 sm:px-6 py-2.5 sm:py-3 bg-zinc-950 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center gap-2 whitespace-nowrap">
-                    <InstagramIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    <span>{artist.instagram}</span>
-                  </button>
-                </a>
-
                 <button 
                   onClick={handleShare}
                   className="px-4 sm:px-6 py-2.5 sm:py-3 bg-zinc-950 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[9px] sm:text-[10px] tracking-wider sm:tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center gap-2 whitespace-nowrap"
@@ -118,43 +111,6 @@ export default function ArtistDetailPage({ params }: { params: Promise<{ slug: s
 
             </div>
 
-          </div>
-        </section>
-
-        {/* Portfolio Gallery */}
-        <section className="py-20 bg-zinc-950 border-t border-white/5 px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-light uppercase tracking-widest text-white mb-4">Masterwork Portfolio</h2>
-              <p className="text-zinc-500 uppercase tracking-[0.3em] text-xs">Curated Masterpieces by {artist.name}</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {artist.portfolio.map((item) => (
-                <div
-                  key={item.id}
-                  onClick={() => setSelectedImage(item.image)}
-                  className="bg-black border border-white/5 rounded-2xl overflow-hidden p-4 relative group hover:border-cyan-500/30 cursor-pointer transition-all duration-500"
-                >
-                  <div className="aspect-[3/4] rounded-xl overflow-hidden mb-4 relative">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover grayscale group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700"
-                    />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <span className="text-xs uppercase tracking-[0.2em] bg-white text-black px-4 py-2 rounded-full font-semibold">
-                        Zoom Masterpiece
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center px-1">
-                    <h4 className="text-sm font-light uppercase tracking-wider text-white">{item.title}</h4>
-                    <span className="text-[10px] text-cyan-400 border border-cyan-400/20 bg-cyan-400/5 px-2.5 py-0.5 rounded-full uppercase tracking-widest">{item.style}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 

@@ -142,7 +142,7 @@ export default function ArtistsPage() {
                   <div className="pt-2">
                     <Link href={`/artists/${artist.slug}`} className="block">
                       <button className="w-full py-3 bg-zinc-900 border border-white/10 hover:border-cyan-400/30 hover:bg-cyan-500/5 text-white hover:text-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 cursor-pointer inline-flex items-center justify-center gap-2">
-                        <span>View Full Work</span>
+                        <span>View Artist</span>
                         <Eye className="w-3.5 h-3.5" />
                       </button>
                     </Link>
