@@ -23,7 +23,7 @@ export const artists: Artist[] = [
     specialty: "Tattoo Artist (Mysore & Bangalore)",
     experience: "8+ Years Experience",
     bio: "Praised specifically in reviews for his custom designs and detailed work, Kushal is Ink Nation's principal realistic artist. Clients praise his patience and meticulous hyper-realistic detailing.",
-    image: "https://images.unsplash.com/photo-1598448663023-ed35ae5541f1?q=80&w=800&auto=format&fit=crop",
+    image: "/artists/Kushal.svg",
     instagram: "@kushal_inknation",
     portfolio: [
       { id: "k1", title: "Hyper-realistic Portrait", style: "Realism", image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop" },
@@ -38,7 +38,7 @@ export const artists: Artist[] = [
     specialty: "Tattoo Artist (Bangalore)",
     experience: "8+ Years Experience",
     bio: "Karam is a master of precision technique. Known specifically in reviews for his surgical hand and expert technical geometric mandalas and fine line details.",
-    image: "https://images.unsplash.com/photo-1621252179027-94459d278660?q=80&w=800&auto=format&fit=crop",
+    image: "/artists/Karam.svg",
     instagram: "@karam_inknation",
     portfolio: [
       { id: "r1", title: "Geometric Sleeve", style: "3D & Geometry", image: "https://images.unsplash.com/photo-1590246814883-57831168e243?q=80&w=800&auto=format&fit=crop" },
@@ -53,7 +53,7 @@ export const artists: Artist[] = [
     specialty: "Tattoo Artist (Mysore)",
     experience: "4+ Years Experience",
     bio: "Sahil specializes in American Traditional themes, fluid watercolor splatters, natural botanical lines, and illustrative modern graphics. Bold colors and rich lines define his signature designs.",
-    image: "https://images.unsplash.com/photo-1605648916361-9bc12ad6a569?q=80&w=800&auto=format&fit=crop",
+    image: "/artists/sahil.svg",
     instagram: "@sahil_inknation",
     portfolio: [
       { id: "s1", title: "Neo-Traditional Owl", style: "Neo-Traditional", image: "https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?q=80&w=800&auto=format&fit=crop" },
@@ -83,7 +83,7 @@ export const artists: Artist[] = [
     specialty: "Tattoo Artist (Travelling Artist)",
     experience: "6+ Years Experience",
     bio: "As our expert travelling artist, Sanju brings diverse global tattooing styles to our studio. Clients praise his adaptability and speed in executing customized, high-fidelity tattoos on the move.",
-    image: "https://images.unsplash.com/photo-1598448663023-ed35ae5541f1?q=80&w=800&auto=format&fit=crop",
+    image: "/artists/sanju.svg",
     instagram: "@sanju_inknation",
     portfolio: [
       { id: "sj1", title: "Custom Travelling Art", style: "Realism", image: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop" },
