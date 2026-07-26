@@ -13,36 +13,6 @@ export const ArtistsRow = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Distort target SVG filters on hover - Clear on Hover
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>, filterId: string) => {
-    const filterEl = document.getElementById(filterId);
-    if (!filterEl) return;
-
-    const displacement = filterEl.querySelector("feDisplacementMap");
-    if (displacement) {
-      gsap.to(displacement, {
-        attr: { scale: 0 },
-        duration: 0.5,
-        ease: "power2.out"
-      });
-    }
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>, filterId: string) => {
-    const filterEl = document.getElementById(filterId);
-    if (!filterEl) return;
-
-    const displacement = filterEl.querySelector("feDisplacementMap");
-    if (displacement) {
-      gsap.to(displacement, {
-        attr: { scale: 35 },
-        duration: 0.6,
-        ease: "power2.inOut"
-      });
-    }
-  };
-
-  // dynamic scroll and GSAP scroll pinning similar to gsap.com on mobile viewports
   useEffect(() => {
     const section = sectionRef.current;
     const container = cardsRef.current;
@@ -142,29 +112,6 @@ export const ArtistsRow = () => {
   return (
     <section ref={sectionRef} className="bg-[#050505] py-24 md:py-32 px-6 md:px-12 border-t border-white/5 relative overflow-hidden select-none">
 
-      {/* Dynamic SVG Distortion Filters (Splatter displacement) */}
-      <svg className="absolute w-0 h-0 pointer-events-none">
-        <defs>
-          {artists.map((artist) => (
-            <filter id={`ink-splatter-${artist.id}`} key={artist.id}>
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.04"
-                numOctaves="2"
-                result="noise"
-              />
-              <feDisplacementMap
-                in="SourceGraphic"
-                in2="noise"
-                scale="35"
-                xChannelSelector="R"
-                yChannelSelector="G"
-              />
-            </filter>
-          ))}
-        </defs>
-      </svg>
-
       {/* Decorative glows */}
       <div className="absolute top-[20%] left-[-10%] w-[350px] h-[350px] bg-[#00f0ff]/5 rounded-full blur-[100px] pointer-events-none" />
 
@@ -196,23 +143,18 @@ export const ArtistsRow = () => {
           {artists.map((artist, idx) => (
             <div
               key={artist.id}
-              onMouseEnter={(e) => handleMouseEnter(e, `ink-splatter-${artist.id}`)}
-              onMouseLeave={(e) => handleMouseLeave(e, `ink-splatter-${artist.id}`)}
               className="artist-card snap-start shrink-0 w-[280px] sm:w-[320px] lg:w-auto bg-zinc-950/80 border border-white/5 p-5 rounded-2xl flex flex-col justify-between hover:border-[#00f0ff]/30 hover:shadow-[0_0_30px_rgba(0,240,255,0.05)] transition-all duration-300 relative overflow-hidden group"
             >
               <div>
                 {/* Visual Artist frame */}
                 <div
                   className="relative w-full aspect-square rounded-xl overflow-hidden mb-5 border border-white/5 transition-all duration-500"
-                  style={{
-                    filter: `url(#ink-splatter-${artist.id})`
-                  }}
                 >
                   <Image
                     src={artist.image}
                     alt={artist.name}
                     fill
-                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                    className="object-cover object-center grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
                     sizes="280px"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
