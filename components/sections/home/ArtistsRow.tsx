@@ -139,11 +139,11 @@ export const ArtistsRow = () => {
           <div
             ref={trackRef}
             className="flex lg:grid lg:grid-cols-5 gap-6 snap-x snap-mandatory scroll-pl-6"
-          >
-          {artists.map((artist, idx) => (
-            <div
+          >          {artists.map((artist, idx) => (
+            <Link
               key={artist.id}
-              className="artist-card snap-start shrink-0 w-[280px] sm:w-[320px] lg:w-auto bg-zinc-950/80 border border-white/5 p-5 rounded-2xl flex flex-col justify-between hover:border-[#00f0ff]/30 hover:shadow-[0_0_30px_rgba(0,240,255,0.05)] transition-all duration-300 relative overflow-hidden group"
+              href={`/artists/${artist.slug}`}
+              className="artist-card snap-start shrink-0 w-[280px] sm:w-[320px] lg:w-auto bg-zinc-950/80 border border-white/5 p-5 rounded-2xl flex flex-col justify-between hover:border-[#00f0ff]/30 hover:shadow-[0_0_30px_rgba(0,240,255,0.05)] transition-all duration-300 relative overflow-hidden group cursor-pointer"
             >
               <div>
                 {/* Visual Artist frame */}
@@ -167,55 +167,12 @@ export const ArtistsRow = () => {
                 <h4 className="text-lg sm:text-xl font-bold uppercase text-white tracking-wider group-hover:text-[#00f0ff] transition-colors">
                   {artist.name}
                 </h4>
-                <p className="text-zinc-500 text-xs font-light mt-1 mb-5">
+                <p className="text-zinc-500 text-xs font-light mt-1">
                   {artist.experience}
                 </p>
-
-                {/* 3 Portfolio preview thumbs (layered slightly) */}
-                <div className="flex space-x-2.5 mb-6">
-                  {artist.portfolio.slice(0, 3).map((work, wIdx) => (
-                    <div
-                      key={work.id}
-                      className="relative w-12 h-12 rounded-lg overflow-hidden border border-white/10 flex-shrink-0"
-                    >
-                      <Image
-                        src={work.image}
-                        alt={work.title}
-                        fill
-                        className="object-cover object-center hover:scale-115 transition-transform duration-300"
-                        sizes="48px"
-                      />
-                    </div>
-                  ))}
-                </div>
               </div>
-
-              {/* Action row */}
-              <div className="flex justify-between items-center border-t border-white/5 pt-4">
-                <a
-                  href={`https://instagram.com/${artist.instagram.replace('@', '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-1.5 text-[9px] font-mono tracking-widest uppercase text-zinc-500 hover:text-white transition-colors cursor-pointer"
-                >
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-                  </svg>
-                  <span>{artist.instagram}</span>
-                </a>
-
-                <Link
-                  href={`/artists/${artist.slug}`}
-                  className="text-[#00f0ff] text-[9px] font-mono tracking-widest uppercase hover:underline cursor-pointer"
-                >
-                  VIEW WORK →
-                </Link>
-              </div>
-
-            </div>
-            ))}
+            </Link>
+          ))}
             <div className="w-6 shrink-0 lg:hidden" />
           </div>
         </div>

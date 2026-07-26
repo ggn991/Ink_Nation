@@ -62,14 +62,14 @@ export const artists: Artist[] = [
     ]
   },
   {
-    id: "krutika",
-    name: "Krutika",
-    slug: "krutika",
+    id: "justin",
+    name: "Justin",
+    slug: "justin",
     specialty: "Piercing Artist (Mysore & Bangalore)",
     experience: "6+ Years Experience",
-    bio: "Krutika handles advanced structural piercing, sterile jewelry placement, custom ear curations, and dermal anchors with elite precision.",
+    bio: "Justin handles advanced structural piercing, sterile jewelry placement, custom ear curations, and dermal anchors with elite precision.",
     image: "https://images.unsplash.com/photo-1597405490028-2823d4b45a5a?q=80&w=800&auto=format&fit=crop",
-    instagram: "@krutika_inknation",
+    instagram: "@justin_inknation",
     portfolio: [
       { id: "v1", title: "Heavy Blackwork Arm", style: "Black & Grey", image: "https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?q=80&w=800&auto=format&fit=crop" },
       { id: "v2", title: "Abstract Script", style: "Script", image: "https://images.unsplash.com/photo-1560707303-4e980ce876ad?q=80&w=800&auto=format&fit=crop" },

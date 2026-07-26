@@ -123,21 +123,6 @@ export default function ArtistsPage() {
                           hoveredArtist === artist.id ? "scale-105 grayscale-0" : "grayscale"
                         }`}
                       />
-                      
-                      {/* Hover piece count previews */}
-                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center p-4">
-                        <div className="text-center space-y-3">
-                          <div className="text-xs uppercase tracking-widest text-cyan-400 font-semibold mb-2">Portfolio Preview</div>
-                          <div className="flex gap-2 justify-center">
-                            {artist.portfolio.map((port, pIdx) => (
-                              <div key={pIdx} className="w-12 h-12 rounded-lg overflow-hidden border border-white/20">
-                                <img src={port.image} alt="" className="w-full h-full object-cover" />
-                              </div>
-                            ))}
-                          </div>
-                          <div className="text-[10px] text-zinc-400 tracking-wider pt-2">3 Core Masterpieces</div>
-                        </div>
-                      </div>
                     </div>
 
                     <div className="space-y-2 mb-6">
