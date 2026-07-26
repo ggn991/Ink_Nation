@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Phone, Clock, Star, Mail, Send, CheckCircle2 } from "lucide-react";
+import { MapPin, Phone, Clock, Star, Mail, Send, CheckCircle2, Map, MessageSquare } from "lucide-react";
 import { formValidationSchema } from "@/lib/validation";
 import { Button } from "@/components/ui/Button";
 import { ThemedSelect } from "@/components/ui/Select";
@@ -20,6 +20,12 @@ const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+);
+
+const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.461c-1.926 0-3.71-.518-5.253-1.417l-.376-.222-3.903 1.023 1.041-3.805-.246-.391c-1.002-1.593-1.53-3.447-1.53-5.352 0-5.428 4.417-9.845 9.846-9.845 2.628 0 5.098 1.023 6.955 2.882 1.858 1.859 2.88 4.329 2.88 6.957 0 5.429-4.417 9.846-9.847 9.846m0-21.7c-6.539 0-11.858 5.32-11.858 11.857 0 2.09.544 4.133 1.579 5.926l-1.677 6.126 6.269-1.644c1.723.939 3.67 1.435 5.684 1.435 6.541 0 11.86-5.32 11.86-11.857 0-3.167-1.233-6.145-3.473-8.384-2.24-2.24-5.216-3.473-8.384-3.473" />
   </svg>
 );
 
@@ -174,22 +180,33 @@ export const ContactSection = () => {
                   </div>
                 </div>
 
-                <div className="pt-4 flex gap-3">
+                <div className="pt-4 space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <a 
+                      href="https://www.google.com/maps/place/Ink+Nation+tattoo+studio/@12.9361184,77.61353,17z/data=!3m1!5s0x3bae144ff14aea87:0x53ca2f919ed6b693!4m14!1m7!3m6!1s0x3bae15f1e7d08be3:0x1827d258214103fd!2sInk+Nation+tattoo+studio!8m2!3d12.9361184!4d77.6161049!16s%2Fg%2F11qgk27lrn!3m5!1s0x3bae15f1e7d08be3:0x1827d258214103fd!8m2!3d12.9361184!4d77.6161049!16s%2Fg%2F11qgk27lrn?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D"
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full text-center py-2.5 bg-white text-black hover:bg-cyan-400 hover:text-black hover:border-cyan-400 border border-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 inline-flex items-center justify-center gap-1.5"
+                    >
+                      <Map className="w-3.5 h-3.5" />
+                      <span>View on Maps</span>
+                    </a>
+                    <a 
+                      href="https://wa.me/918123713723"
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full text-center py-2.5 bg-emerald-600 border border-emerald-600 text-white hover:bg-emerald-500 sm:bg-zinc-900 sm:border-emerald-500/30 sm:text-emerald-400 sm:hover:border-emerald-400 sm:hover:bg-emerald-500/10 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap inline-flex items-center justify-center gap-1.5"
+                    >
+                      <WhatsAppIcon className="w-3.5 h-3.5" />
+                      <span>WhatsApp</span>
+                    </a>
+                  </div>
                   <a 
-                    href="https://www.google.com/maps/place/Ink+Nation+tattoo+studio/@12.9361184,77.61353,17z/data=!3m1!5s0x3bae144ff14aea87:0x53ca2f919ed6b693!4m14!1m7!3m6!1s0x3bae15f1e7d08be3:0x1827d258214103fd!2sInk+Nation+tattoo+studio!8m2!3d12.9361184!4d77.6161049!16s%2Fg%2F11qgk27lrn!3m5!1s0x3bae15f1e7d08be3:0x1827d258214103fd!8m2!3d12.9361184!4d77.6161049!16s%2Fg%2F11qgk27lrn?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D"
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex-1 text-center py-2.5 bg-white text-black hover:bg-cyan-400 hover:text-black hover:border-cyan-400 border border-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300"
+                    href="tel:+918123713723"
+                    className="w-full text-center py-2.5 bg-zinc-900 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap inline-flex items-center justify-center gap-1.5"
                   >
-                    View on Maps
-                  </a>
-                  <a 
-                    href="https://wa.me/918123713723"
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex-1 text-center py-2.5 bg-emerald-600 border border-emerald-600 text-white hover:bg-emerald-500 sm:bg-zinc-900 sm:border-white/10 sm:text-white sm:hover:border-cyan-400 sm:hover:text-cyan-400 sm:hover:bg-cyan-500/5 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap"
-                  >
-                    WhatsApp
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>Call Studio: 08123713723</span>
                   </a>
                 </div>
               </div>
@@ -247,22 +264,33 @@ export const ContactSection = () => {
                   </div>
                 </div>
 
-                <div className="pt-4 flex gap-3">
+                <div className="pt-4 space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <a 
+                      href="https://www.google.com/maps/place/Ink+Nation+Tattoo+Studio+02/@12.29656,76.6263891,17z/data=!3m1!4b1!4m6!3m5!1s0x3baf7b41f225f739:0x6bc60281c863ae6f!8m2!3d12.29656!4d76.628964!16s%2Fg%2F11stydhq7d?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D"
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full text-center py-2.5 bg-white text-black hover:bg-cyan-400 hover:text-black hover:border-cyan-400 border border-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 inline-flex items-center justify-center gap-1.5"
+                    >
+                      <Map className="w-3.5 h-3.5" />
+                      <span>View Maps</span>
+                    </a>
+                    <a 
+                      href="https://wa.me/918123713723"
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full text-center py-2.5 bg-emerald-600 border border-emerald-600 text-white hover:bg-emerald-500 sm:bg-zinc-900 sm:border-emerald-500/30 sm:text-emerald-400 sm:hover:border-emerald-400 sm:hover:bg-emerald-500/10 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap inline-flex items-center justify-center gap-1.5"
+                    >
+                      <WhatsAppIcon className="w-3.5 h-3.5" />
+                      <span>WhatsApp</span>
+                    </a>
+                  </div>
                   <a 
-                    href="https://www.google.com/maps/place/Ink+Nation+Tattoo+Studio+02/@12.29656,76.6263891,17z/data=!3m1!4b1!4m6!3m5!1s0x3baf7b41f225f739:0x6bc60281c863ae6f!8m2!3d12.29656!4d76.628964!16s%2Fg%2F11stydhq7d?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D"
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex-1 text-center py-2.5 bg-white text-black hover:bg-cyan-400 hover:text-black hover:border-cyan-400 border border-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300"
+                    href="tel:+918123713723"
+                    className="w-full text-center py-2.5 bg-zinc-900 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap inline-flex items-center justify-center gap-1.5"
                   >
-                    View on Maps
-                  </a>
-                  <a 
-                    href="https://wa.me/918123713723"
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex-1 text-center py-2.5 bg-emerald-600 border border-emerald-600 text-white hover:bg-emerald-500 sm:bg-zinc-900 sm:border-white/10 sm:text-white sm:hover:border-cyan-400 sm:hover:text-cyan-400 sm:hover:bg-cyan-500/5 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap"
-                  >
-                    WhatsApp
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>Call Studio: 08123713723</span>
                   </a>
                 </div>
               </div>
