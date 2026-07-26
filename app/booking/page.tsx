@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { AppProviders } from "@/components/layout/app-providers";
 import { Footer } from "@/components/layout/footer";
@@ -31,6 +32,8 @@ export default function BookingPage() {
 
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [fileAttachment, setFileAttachment] = useState<{ filename: string; content: string; contentType: string } | null>(null);
+  const [isSubmittingBooking, setIsSubmittingBooking] = useState(false);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
 
@@ -84,6 +87,7 @@ export default function BookingPage() {
     if (!file.type.startsWith("image/")) {
       setUploadError("Only image files are allowed.");
       setBookingData(prev => ({ ...prev, referenceImage: null }));
+      setFileAttachment(null);
       e.target.value = "";
       return;
     }
@@ -91,16 +95,30 @@ export default function BookingPage() {
     if (file.size > 5 * 1024 * 1024) {
       setUploadError("File size exceeds 5MB limit (selected: " + (file.size / (1024 * 1024)).toFixed(1) + "MB).");
       setBookingData(prev => ({ ...prev, referenceImage: null }));
+      setFileAttachment(null);
       e.target.value = "";
       return;
     }
 
     setUploadError(null);
     setUploading(true);
-    setTimeout(() => {
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64Content = reader.result as string;
+      setFileAttachment({
+        filename: file.name,
+        content: base64Content,
+        contentType: file.type || "image/png",
+      });
       setBookingData(prev => ({ ...prev, referenceImage: file.name }));
       setUploading(false);
-    }, 1200);
+    };
+    reader.onerror = () => {
+      setUploadError("Failed to read image file.");
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -154,9 +172,29 @@ export default function BookingPage() {
     }
 
     setErrors({});
-    // Log the consolidated booking object to console
-    console.log("CONSOLIDATED INK NATION BOOKING:", bookingData);
-    setSuccessModalOpen(true);
+    setIsSubmittingBooking(true);
+
+    fetch("/api/send-booking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        bookingData,
+        attachment: fileAttachment,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setIsSubmittingBooking(false);
+        if (!data.success) {
+          console.error("Failed to send booking email:", data.error);
+        }
+        setSuccessModalOpen(true);
+      })
+      .catch((err) => {
+        console.error("Error submitting booking:", err);
+        setIsSubmittingBooking(false);
+        setSuccessModalOpen(true);
+      });
   };
 
   const closeSuccessModal = () => {
@@ -357,10 +395,11 @@ export default function BookingPage() {
                             onChange={(val) => setBookingData((prev) => ({ ...prev, placement: val }))}
                             placeholder="Choose anatomical area..."
                             options={
-                              bookingData.service.toLowerCase().includes("piercing")
+                               bookingData.service.toLowerCase().includes("piercing")
                                 ? [
                                     { value: "Ear (Cartilage / Lobe)", label: "Ear (Cartilage / Lobe)" },
                                     { value: "Face / Septum / Nose", label: "Face / Septum / Nose" },
+                                    { value: "Belly / Navel", label: "Belly / Navel" },
                                     { value: "Other Anatomical Area", label: "Other Anatomical Area" },
                                   ]
                                 : [
@@ -574,14 +613,14 @@ export default function BookingPage() {
 
                     <button
                       type="submit"
-                      disabled={!bookingData.agreeToSafety}
+                      disabled={!bookingData.agreeToSafety || isSubmittingBooking}
                       className={`w-full py-4 rounded-full font-semibold uppercase tracking-widest text-xs transition-all duration-300 transform hover:scale-[1.01] active:scale-[0.99] border cursor-pointer ${
-                        bookingData.agreeToSafety 
+                        bookingData.agreeToSafety && !isSubmittingBooking
                           ? "bg-white text-black border-white hover:bg-cyan-400 hover:text-black hover:border-cyan-400 shadow-[0_0_20px_rgba(0,240,255,0.2)]" 
                           : "bg-zinc-800 text-zinc-500 border-zinc-800 cursor-not-allowed opacity-50"
                       }`}
                     >
-                      Submit Booking request
+                      {isSubmittingBooking ? "Sending Request..." : "Submit Booking request"}
                     </button>
                   </form>
                 </motion.div>
@@ -658,7 +697,6 @@ export default function BookingPage() {
                   </p>
                   <div className="p-4 bg-zinc-900/60 rounded-2xl text-xs space-y-2 border border-white/5 text-left font-mono">
                     <p><span className="text-zinc-500">BRANCH:</span> {bookingData.branch.toUpperCase()} FLAGSHIP</p>
-                    <p><span className="text-zinc-500">ARTIST:</span> {bookingData.artist}</p>
                     <p><span className="text-zinc-500">DATE:</span> {bookingData.date} ({bookingData.time})</p>
                   </div>
                   <p className="text-zinc-500 text-xs">
@@ -675,12 +713,12 @@ export default function BookingPage() {
                   >
                     Direct WhatsApp coordinate
                   </a>
-                  <button
-                    onClick={closeSuccessModal}
-                    className="w-full bg-zinc-900 border border-white/10 hover:border-white/20 text-white py-3 rounded-full font-semibold uppercase tracking-widest text-xs transition-colors duration-300 block cursor-pointer"
+                  <Link
+                    href="/gallery"
+                    className="w-full bg-zinc-900 border border-white/10 hover:border-white/20 text-white py-3 rounded-full font-semibold uppercase tracking-widest text-xs transition-colors duration-300 block cursor-pointer text-center"
                   >
                     Return to gallery
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             </motion.div>

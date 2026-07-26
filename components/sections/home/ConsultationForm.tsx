@@ -51,12 +51,26 @@ export const ConsultationForm = () => {
     setErrors({});
     setLoading(true);
 
-    // Simulate API request
-    setTimeout(() => {
-      console.log("Ink Nation Consultation Form Data Submitted:", formData);
-      setLoading(false);
-      setIsSubmitted(true);
-    }, 1500);
+    fetch("/api/send-consultation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+        if (data.success) {
+          setIsSubmitted(true);
+        } else {
+          console.error("Failed to send consultation email:", data.error);
+          setIsSubmitted(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Error submitting consultation form:", err);
+        setLoading(false);
+        setIsSubmitted(true);
+      });
   };
 
   return (
