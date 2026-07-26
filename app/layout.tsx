@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "@/components/layout/app-providers";
 import { Navbar } from "@/components/layout/navbar";
+import { FloatingContact } from "@/components/ui/FloatingContact";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -29,6 +30,7 @@ export default function RootLayout({
         <AppProviders>
           <Navbar />
           {children}
+          <FloatingContact />
         </AppProviders>
       </body>
     </html>
