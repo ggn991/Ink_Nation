@@ -8,6 +8,8 @@ import { Check, Calendar, User, Shield, Star, MapPin, ArrowRight, ArrowLeft, Upl
 import { artists } from "@/lib/data/artists";
 import { BreadcrumbSchema } from "@/lib/seo/json-ld";
 import { formValidationSchema } from "@/lib/validation";
+import { ThemedSelect } from "@/components/ui/Select";
+import { ThemedDatePicker } from "@/components/ui/DatePicker";
 
 export default function BookingPage() {
   const [step, setStep] = useState(1);
@@ -28,6 +30,7 @@ export default function BookingPage() {
   });
 
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
 
@@ -35,7 +38,7 @@ export default function BookingPage() {
     {
       id: "bangalore",
       name: "Bangalore flagship",
-      rating: "4.8★",
+      rating: "4.9★",
       reviews: "1,200+ reviews",
       address: "1st Floor, 20th Main Rd, KHB Colony, 5th Block, Koramangala, Bengaluru, 560095",
       image: "https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?q=80&w=800"
@@ -75,13 +78,29 @@ export default function BookingPage() {
   };
 
   const handleSimulatedUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setUploading(true);
-      setTimeout(() => {
-        setBookingData(prev => ({ ...prev, referenceImage: e.target.files![0].name }));
-        setUploading(false);
-      }, 1500);
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setUploadError("Only image files are allowed.");
+      setBookingData(prev => ({ ...prev, referenceImage: null }));
+      e.target.value = "";
+      return;
     }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError("File size exceeds 5MB limit (selected: " + (file.size / (1024 * 1024)).toFixed(1) + "MB).");
+      setBookingData(prev => ({ ...prev, referenceImage: null }));
+      e.target.value = "";
+      return;
+    }
+
+    setUploadError(null);
+    setUploading(true);
+    setTimeout(() => {
+      setBookingData(prev => ({ ...prev, referenceImage: file.name }));
+      setUploading(false);
+    }, 1200);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -106,8 +125,11 @@ export default function BookingPage() {
 
   const isNextDisabled = () => {
     if (step === 1) return !bookingData.branch;
-    if (step === 2) return !bookingData.service || !bookingData.artist;
-    if (step === 3) return !bookingData.placement || !bookingData.notes;
+    if (step === 2) return !bookingData.service;
+    if (step === 3) {
+      const isAcademy = bookingData.service.toLowerCase().includes("academy");
+      return isAcademy ? false : !bookingData.placement;
+    }
     return false;
   };
 
@@ -167,10 +189,10 @@ export default function BookingPage() {
   return (
     <AppProviders>
       <BreadcrumbSchema items={breadcrumbs} />
-      <main className="min-h-screen bg-black text-white pt-36 pb-24 relative overflow-hidden">
+      <main className="min-h-screen bg-black text-white pt-36 relative overflow-hidden flex flex-col justify-between">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,240,255,0.03)_0%,_transparent_75%)] pointer-events-none" />
 
-        <div className="max-w-4xl mx-auto px-6 relative z-10">
+        <div className="max-w-4xl mx-auto px-6 relative z-10 mb-24 w-full">
           
           {/* Header */}
           <div className="text-center mb-12">
@@ -274,7 +296,7 @@ export default function BookingPage() {
                   className="space-y-6"
                 >
                   <h3 className="text-xl font-light uppercase tracking-wider text-white border-b border-white/5 pb-3">
-                    Step 2: Select Service & Artist
+                    Step 2: Select Service
                   </h3>
 
                   <div className="space-y-6 pt-2">
@@ -305,34 +327,6 @@ export default function BookingPage() {
                         ))}
                       </div>
                     </div>
-
-                    {/* Artist Dropdown */}
-                    {bookingData.service && (
-                      <motion.div 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="space-y-3"
-                      >
-                        <label className="text-xs uppercase tracking-widest text-zinc-400 font-medium">Select Your Practitioner</label>
-                        <div className="relative">
-                          <select
-                            name="artist"
-                            value={bookingData.artist}
-                            onChange={handleInputChange}
-                            className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm appearance-none cursor-pointer"
-                            style={{ backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25em 1.25em', paddingRight: '2.5rem' }}
-                          >
-                            <option value="" className="bg-black text-zinc-500">Choose Artist...</option>
-                            {getArtistsForService(bookingData.service).map((artistName) => (
-                              <option key={artistName} value={artistName} className="bg-black text-white">{artistName}</option>
-                            ))}
-                          </select>
-                        </div>
-                        <p className="text-[10px] text-zinc-500 font-light font-mono uppercase tracking-wider">
-                          * Selected service matches our master illustrators and technicians.
-                        </p>
-                      </motion.div>
-                    )}
                   </div>
                 </motion.div>
               )}
@@ -347,98 +341,104 @@ export default function BookingPage() {
                   className="space-y-6"
                 >
                   <h3 className="text-xl font-light uppercase tracking-wider text-white border-b border-white/5 pb-3">
-                    Step 3: Concept Details & placement
+                    {bookingData.service.toLowerCase().includes("academy")
+                      ? "Step 3: Learning Goals & Experience"
+                      : "Step 3: Concept Details & Placement"}
                   </h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                    <div className="space-y-4">
-                      {/* Placement selector */}
-                      <div className="space-y-2">
-                        <label className="text-xs uppercase tracking-widest text-zinc-400 font-medium">Anatomical Placement</label>
-                        <select
-                          name="placement"
-                          value={bookingData.placement}
-                          onChange={handleInputChange}
-                          className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm appearance-none cursor-pointer"
-                          style={{ backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25em 1.25em', paddingRight: '2.5rem' }}
-                        >
-                          <option value="" className="bg-black text-zinc-500">Choose anatomical area...</option>
-                          <option value="Arm / Forearm">Arm / Forearm</option>
-                          <option value="Wrist / Hand">Wrist / Hand</option>
-                          <option value="Leg / Calf / Thigh">Leg / Calf / Thigh</option>
-                          <option value="Chest / Ribs">Chest / Ribs</option>
-                          <option value="Back / Shoulder">Back / Shoulder</option>
-                          <option value="Collarbone / Neck">Collarbone / Neck</option>
-                          <option value="Ear (Cartilage/Lobe)">Ear (Cartilage/Lobe)</option>
-                          <option value="Face / Septum / Nose">Face / Septum / Nose</option>
-                          <option value="Other Area">Other Anatomical Area</option>
-                        </select>
-                      </div>
-
-                      {/* Sizing description */}
-                      <div className="space-y-2">
-                        <label className="text-xs uppercase tracking-widest text-zinc-400 font-medium">Estimated Dimensions</label>
-                        <input
-                          type="text"
-                          name="size"
-                          value={bookingData.size}
-                          onChange={handleInputChange}
-                          placeholder="e.g. 4x4 inches, or Half Sleeve"
-                          className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      {/* Interactive Drag & Drop box */}
-                      <div className="space-y-2">
-                        <label className="text-xs uppercase tracking-widest text-zinc-400 font-medium">Reference Images (Optional)</label>
-                        <div className="border border-dashed border-white/10 hover:border-cyan-400/30 rounded-2xl p-6 bg-black flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 relative group min-h-[140px]">
-                          <input 
-                            type="file" 
-                            accept="image/*"
-                            onChange={handleSimulatedUpload}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  {!bookingData.service.toLowerCase().includes("academy") && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                      <div className="space-y-4">
+                        {/* Placement selector */}
+                        <div className="space-y-2">
+                          <label className="text-xs uppercase tracking-widest text-zinc-400 font-medium">Anatomical Placement</label>
+                          <ThemedSelect
+                            value={bookingData.placement}
+                            onChange={(val) => setBookingData((prev) => ({ ...prev, placement: val }))}
+                            placeholder="Choose anatomical area..."
+                            options={
+                              bookingData.service.toLowerCase().includes("piercing")
+                                ? [
+                                    { value: "Ear (Cartilage / Lobe)", label: "Ear (Cartilage / Lobe)" },
+                                    { value: "Face / Septum / Nose", label: "Face / Septum / Nose" },
+                                    { value: "Other Anatomical Area", label: "Other Anatomical Area" },
+                                  ]
+                                : [
+                                    { value: "Arm / Forearm", label: "Arm / Forearm" },
+                                    { value: "Wrist / Hand", label: "Wrist / Hand" },
+                                    { value: "Leg / Calf / Thigh", label: "Leg / Calf / Thigh" },
+                                    { value: "Chest / Ribs", label: "Chest / Ribs" },
+                                    { value: "Back / Shoulder", label: "Back / Shoulder" },
+                                    { value: "Collarbone / Neck", label: "Collarbone / Neck" },
+                                    { value: "Other Anatomical Area", label: "Other Anatomical Area" },
+                                  ]
+                            }
                           />
-                          {uploading ? (
-                            <div className="space-y-2">
-                              <div className="w-12 h-1 h-1 bg-zinc-800 rounded-full overflow-hidden mx-auto">
-                                <motion.div 
-                                  className="h-full bg-cyan-400"
-                                  initial={{ width: 0 }}
-                                  animate={{ width: "100%" }}
-                                  transition={{ duration: 1.5 }}
-                                />
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        {/* Interactive Drag & Drop box */}
+                        <div className="space-y-2">
+                          <label className="text-xs uppercase tracking-widest text-zinc-400 font-medium">Reference Images (Optional)</label>
+                          <div className="border border-dashed border-white/10 hover:border-cyan-400/30 rounded-2xl p-6 bg-black flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 relative group min-h-[140px]">
+                            <input 
+                              type="file" 
+                              accept="image/png, image/jpeg, image/webp, image/gif, image/svg+xml"
+                              onChange={handleSimulatedUpload}
+                              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            />
+                            {uploading ? (
+                              <div className="space-y-2">
+                                <div className="w-12 h-1 h-1 bg-zinc-800 rounded-full overflow-hidden mx-auto">
+                                  <motion.div 
+                                    className="h-full bg-cyan-400"
+                                    initial={{ width: 0 }}
+                                    animate={{ width: "100%" }}
+                                    transition={{ duration: 1.2 }}
+                                  />
+                                </div>
+                                <span className="text-[10px] uppercase tracking-widest text-cyan-400 font-semibold font-mono">Uploading image...</span>
                               </div>
-                              <span className="text-[10px] uppercase tracking-widest text-cyan-400 font-semibold font-mono">Uploading image...</span>
-                            </div>
-                          ) : bookingData.referenceImage ? (
-                            <div className="space-y-2 text-cyan-400">
-                              <CheckCircle className="w-8 h-8 mx-auto" />
-                              <span className="text-[10px] uppercase tracking-widest font-mono font-semibold block">{bookingData.referenceImage}</span>
-                              <span className="text-[9px] text-zinc-500 block">Click to upload alternative</span>
-                            </div>
-                          ) : (
-                            <div className="space-y-2 text-zinc-500 group-hover:text-zinc-300 transition-colors">
-                              <Upload className="w-8 h-8 mx-auto stroke-1" />
-                              <span className="text-[10px] uppercase tracking-widest font-mono font-semibold block">Drag & Drop Stencils</span>
-                              <span className="text-[9px] block">PNG, JPG up to 10MB</span>
-                            </div>
+                            ) : bookingData.referenceImage ? (
+                              <div className="space-y-2 text-cyan-400">
+                                <CheckCircle className="w-8 h-8 mx-auto" />
+                                <span className="text-[10px] uppercase tracking-widest font-mono font-semibold block">{bookingData.referenceImage}</span>
+                                <span className="text-[9px] text-zinc-500 block">Click to upload alternative</span>
+                              </div>
+                            ) : (
+                              <div className="space-y-2 text-zinc-500 group-hover:text-zinc-300 transition-colors">
+                                <Upload className="w-8 h-8 mx-auto stroke-1" />
+                                <span className="text-[10px] uppercase tracking-widest font-mono font-semibold block">Drag & Drop Stencils</span>
+                                <span className="text-[9px] block">PNG, JPG, WEBP up to 5MB</span>
+                              </div>
+                            )}
+                          </div>
+                          {uploadError && (
+                            <p className="text-red-500 text-[11px] mt-1 ml-1 font-light">{uploadError}</p>
                           )}
                         </div>
                       </div>
                     </div>
-                  </div>
+                  )}
 
-                  {/* Concept description textarea */}
+                  {/* Concept / Learning goals description textarea */}
                   <div className="space-y-2 pt-2">
-                    <label className="text-xs uppercase tracking-widest text-zinc-400 font-medium">Describe the Concept</label>
+                    <label className="text-xs uppercase tracking-widest text-zinc-400 font-medium">
+                      {bookingData.service.toLowerCase().includes("academy")
+                        ? "What would you like to learn from us? (Optional)"
+                        : "Describe the Concept (Optional)"}
+                    </label>
                     <textarea
                       name="notes"
                       value={bookingData.notes}
                       onChange={handleInputChange}
-                      rows={3}
-                      placeholder="Explain your ideas, custom elements, symbolism, or any specific requests..."
+                      rows={4}
+                      placeholder={
+                        bookingData.service.toLowerCase().includes("academy")
+                          ? "Tell us what you would like to learn from our academy and describe any prior drawing, sketching, or tattooing experience you have..."
+                          : "Explain your ideas, custom elements, symbolism, or any specific requests..."
+                      }
                       className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors resize-none font-light text-sm"
                     />
                   </div>
@@ -460,7 +460,7 @@ export default function BookingPage() {
 
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Review card */}
-                    <div className="bg-black border border-white/5 rounded-2xl p-6 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-light text-zinc-400">
+                    <div className={`bg-black border border-white/5 rounded-2xl p-6 grid grid-cols-1 ${bookingData.service.toLowerCase().includes("academy") ? "sm:grid-cols-2" : "sm:grid-cols-3"} gap-4 text-xs font-light text-zinc-400`}>
                       <div>
                         <h5 className="uppercase text-[9px] text-zinc-600 tracking-wider">Branch</h5>
                         <p className="text-cyan-400 font-semibold uppercase mt-0.5">{bookingData.branch}</p>
@@ -469,14 +469,12 @@ export default function BookingPage() {
                         <h5 className="uppercase text-[9px] text-zinc-600 tracking-wider">Service</h5>
                         <p className="text-white font-semibold uppercase mt-0.5">{bookingData.service}</p>
                       </div>
-                      <div>
-                        <h5 className="uppercase text-[9px] text-zinc-600 tracking-wider">Practitioner</h5>
-                        <p className="text-white font-semibold mt-0.5">{bookingData.artist}</p>
-                      </div>
-                      <div>
-                        <h5 className="uppercase text-[9px] text-zinc-600 tracking-wider">Area / Size</h5>
-                        <p className="text-white font-semibold mt-0.5">{bookingData.placement} / {bookingData.size}</p>
-                      </div>
+                      {!bookingData.service.toLowerCase().includes("academy") && (
+                        <div>
+                          <h5 className="uppercase text-[9px] text-zinc-600 tracking-wider">Placement Area</h5>
+                          <p className="text-white font-semibold mt-0.5">{bookingData.placement || "Not specified"}</p>
+                        </div>
+                      )}
                     </div>
 
                     {/* Form Fields */}
@@ -537,31 +535,25 @@ export default function BookingPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-zinc-500">Preferred Date</label>
-                        <input
-                          type="date"
-                          name="date"
-                          required
+                        <ThemedDatePicker
                           value={bookingData.date}
-                          onChange={handleInputChange}
-                          className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm appearance-none"
+                          onChange={(val) => setBookingData((prev) => ({ ...prev, date: val }))}
+                          required
                         />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-zinc-500">Preferred Time Slot</label>
-                        <select
-                          name="time"
-                          required
+                        <ThemedSelect
                           value={bookingData.time}
-                          onChange={handleInputChange}
-                          className="w-full bg-black border border-zinc-800 hover:border-zinc-700 focus:border-zinc-500 rounded-xl px-4 py-3.5 text-white focus:outline-none transition-colors font-light text-sm appearance-none cursor-pointer"
-                          style={{ backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25em 1.25em', paddingRight: '2.5rem' }}
-                        >
-                          <option value="" className="bg-black text-zinc-500">Choose slot...</option>
-                          <option value="11:00 AM - 1:00 PM">Morning (11:00 AM - 1:00 PM)</option>
-                          <option value="1:30 PM - 4:00 PM">Afternoon (1:30 PM - 4:00 PM)</option>
-                          <option value="4:30 PM - 7:00 PM">Evening (4:30 PM - 7:00 PM)</option>
-                          <option value="7:30 PM - 9:00 PM">Late Evening (7:30 PM - 9:00 PM)</option>
-                        </select>
+                          onChange={(val) => setBookingData((prev) => ({ ...prev, time: val }))}
+                          placeholder="Choose slot..."
+                          options={[
+                            { value: "11:00 AM - 1:00 PM", label: "Morning (11:00 AM - 1:00 PM)" },
+                            { value: "1:30 PM - 4:00 PM", label: "Afternoon (1:30 PM - 4:00 PM)" },
+                            { value: "4:30 PM - 7:00 PM", label: "Evening (4:30 PM - 7:00 PM)" },
+                            { value: "7:30 PM - 9:00 PM", label: "Late Evening (7:30 PM - 9:00 PM)" },
+                          ]}
+                        />
                       </div>
                     </div>
 
@@ -676,7 +668,7 @@ export default function BookingPage() {
 
                 <div className="pt-4 border-t border-white/5 space-y-3">
                   <a 
-                    href={`https://wa.me/${bookingData.branch === "mysore" ? "918735097898" : "918735097898"}`} 
+                    href="https://wa.me/918123713723" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="w-full bg-cyan-400 text-black py-3 rounded-full font-semibold uppercase tracking-widest text-xs hover:bg-cyan-500 transition-all duration-300 block shadow-md cursor-pointer"

@@ -68,7 +68,7 @@ export const artists: Artist[] = [
     specialty: "Piercing Artist (Mysore & Bangalore)",
     experience: "6+ Years Experience",
     bio: "Justin handles advanced structural piercing, sterile jewelry placement, custom ear curations, and dermal anchors with elite precision.",
-    image: "https://images.unsplash.com/photo-1597405490028-2823d4b45a5a?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop",
     instagram: "@justin_inknation",
     portfolio: [
       { id: "v1", title: "Heavy Blackwork Arm", style: "Black & Grey", image: "https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?q=80&w=800&auto=format&fit=crop" },

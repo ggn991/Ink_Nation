@@ -10,7 +10,7 @@ export function LocalBusinessSchema() {
         "name": "Ink Nation Tattoo Studio - Bangalore",
         "image": "https://images.unsplash.com/photo-1598448663023-ed35ae5541f1?q=80&w=800",
         "url": "https://inknation.in",
-        "telephone": "+919876543210",
+        "telephone": "+918123713723",
         "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",
@@ -41,7 +41,7 @@ export function LocalBusinessSchema() {
         },
         "aggregateRating": {
           "@type": "AggregateRating",
-          "ratingValue": "4.8",
+          "ratingValue": "4.9",
           "reviewCount": "1200",
           "bestRating": "5",
           "worstRating": "1"
@@ -53,7 +53,7 @@ export function LocalBusinessSchema() {
         "name": "Ink Nation Tattoo Studio - Mysore",
         "image": "https://images.unsplash.com/photo-1621252179027-94459d278660?q=80&w=800",
         "url": "https://inknation.in",
-        "telephone": "08735097898",
+        "telephone": "+918123713723",
         "priceRange": "$$",
         "address": {
           "@type": "PostalAddress",

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { MapPin, Phone, Clock, Star, Mail, Send, CheckCircle2 } from "lucide-react";
 import { formValidationSchema } from "@/lib/validation";
 import { Button } from "@/components/ui/Button";
+import { ThemedSelect } from "@/components/ui/Select";
 
 const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -113,7 +114,7 @@ export const ContactSection = () => {
                 <h3 className="text-2xl font-light uppercase tracking-widest text-white">Bangalore Studio</h3>
                 <div className="flex items-center gap-1.5 bg-cyan-500/10 text-cyan-400 px-3 py-1 rounded-full text-xs font-medium border border-cyan-500/20 w-max">
                   <Star className="w-3.5 h-3.5 fill-current" />
-                  <span>4.8</span>
+                  <span>4.9</span>
                   <span className="text-cyan-400/60 font-light text-[10px]">(1,200+)</span>
                 </div>
               </div>
@@ -145,7 +146,7 @@ export const ContactSection = () => {
                   <div>
                     <h4 className="text-xs uppercase tracking-widest text-zinc-600 mb-1">Phone</h4>
                     <p className="text-gray-400 font-light text-sm">
-                      <a href="tel:+918735097898" className="hover:text-white transition-colors">+91 87350 97898</a>
+                      <a href="tel:+918123713723" className="hover:text-white transition-colors">+91 8123713723</a>
                     </p>
                   </div>
                 </div>
@@ -169,7 +170,7 @@ export const ContactSection = () => {
                     View on Maps
                   </a>
                   <a 
-                    href="https://wa.me/918735097898"
+                    href="https://wa.me/918123713723"
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex-1 text-center py-2.5 bg-emerald-600 border border-emerald-600 text-white hover:bg-emerald-500 sm:bg-zinc-900 sm:border-white/10 sm:text-white sm:hover:border-cyan-400 sm:hover:text-cyan-400 sm:hover:bg-cyan-500/5 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap"
@@ -218,7 +219,7 @@ export const ContactSection = () => {
                   <div>
                     <h4 className="text-xs uppercase tracking-widest text-zinc-600 mb-1">Phone</h4>
                     <p className="text-gray-400 font-light text-sm">
-                      <a href="tel:+918735097898" className="hover:text-white transition-colors">+91 87350 97898</a>
+                      <a href="tel:+918123713723" className="hover:text-white transition-colors">+91 8123713723</a>
                     </p>
                   </div>
                 </div>
@@ -242,7 +243,7 @@ export const ContactSection = () => {
                     View on Maps
                   </a>
                   <a 
-                    href="https://wa.me/918735097898"
+                    href="https://wa.me/918123713723"
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex-1 text-center py-2.5 bg-emerald-600 border border-emerald-600 text-white hover:bg-emerald-500 sm:bg-zinc-900 sm:border-white/10 sm:text-white sm:hover:border-cyan-400 sm:hover:text-cyan-400 sm:hover:bg-cyan-500/5 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap"
@@ -362,17 +363,15 @@ export const ContactSection = () => {
                     <label htmlFor="branch" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
                       Preferred Studio *
                     </label>
-                    <select
+                    <ThemedSelect
                       id="branch"
-                      name="branch"
                       value={formData.branch}
-                      onChange={handleChange}
-                      className="bg-black border border-zinc-800 hover:border-zinc-700 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light cursor-pointer appearance-none"
-                      style={{ backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25em 1.25em', paddingRight: '2.5rem' }}
-                    >
-                      <option value="bangalore" className="bg-black text-white">Bangalore (Koramangala 5th Block)</option>
-                      <option value="mysore" className="bg-black text-white">Mysore (Gokulam 2nd Stage)</option>
-                    </select>
+                      onChange={(val) => setFormData((prev) => ({ ...prev, branch: val }))}
+                      options={[
+                        { value: "bangalore", label: "Bangalore (Koramangala 5th Block)" },
+                        { value: "mysore", label: "Mysore (Gokulam 2nd Stage)" },
+                      ]}
+                    />
                   </div>
 
                   {/* Service selection */}
@@ -380,19 +379,17 @@ export const ContactSection = () => {
                     <label htmlFor="service" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
                       Select Service *
                     </label>
-                    <select
+                    <ThemedSelect
                       id="service"
-                      name="service"
                       value={formData.service}
-                      onChange={handleChange}
-                      className="bg-black border border-zinc-800 hover:border-zinc-700 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light cursor-pointer appearance-none"
-                      style={{ backgroundImage: 'url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'M6 8l4 4 4-4\'/%3E%3C/svg%3E")', backgroundPosition: 'right 1rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.25em 1.25em', paddingRight: '2.5rem' }}
-                    >
-                      <option value="tattoo" className="bg-black text-white">Custom Tattoo Art</option>
-                      <option value="piercing" className="bg-black text-white">Body Piercing</option>
-                      <option value="training" className="bg-black text-white">Academy Tattoo Training</option>
-                      <option value="other" className="bg-black text-white">Other / General Inquiry</option>
-                    </select>
+                      onChange={(val) => setFormData((prev) => ({ ...prev, service: val }))}
+                      options={[
+                        { value: "tattoo", label: "Custom Tattoo Art" },
+                        { value: "piercing", label: "Body Piercing" },
+                        { value: "training", label: "Academy Tattoo Training" },
+                        { value: "other", label: "Other / General Inquiry" },
+                      ]}
+                    />
                   </div>
                 </div>
 

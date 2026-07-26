@@ -138,12 +138,13 @@ export const ArtistsRow = () => {
         >
           <div
             ref={trackRef}
-            className="flex lg:grid lg:grid-cols-5 gap-6 snap-x snap-mandatory scroll-pl-6"
-          >          {artists.map((artist, idx) => (
+            className="flex lg:grid lg:grid-cols-4 gap-6 snap-x snap-mandatory scroll-pl-6"
+          >
+            {artists.map((artist, idx) => (
             <Link
               key={artist.id}
               href={`/artists/${artist.slug}`}
-              className="artist-card snap-start shrink-0 w-[280px] sm:w-[320px] lg:w-auto bg-zinc-950/80 border border-white/5 p-5 rounded-2xl flex flex-col justify-between hover:border-[#00f0ff]/30 hover:shadow-[0_0_30px_rgba(0,240,255,0.05)] transition-all duration-300 relative overflow-hidden group cursor-pointer"
+              className="artist-card snap-start shrink-0 w-[300px] sm:w-[340px] lg:w-auto bg-zinc-950/80 border border-white/5 p-6 rounded-2xl flex flex-col justify-between hover:border-[#00f0ff]/30 hover:shadow-[0_0_30px_rgba(0,240,255,0.05)] transition-all duration-300 relative overflow-hidden group cursor-pointer"
             >
               <div>
                 {/* Visual Artist frame */}

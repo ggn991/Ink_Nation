@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Send, CheckCircle2 } from "lucide-react";
 import { SectionHeading } from "@/components/sections/shared/SectionHeading";
 import { Button } from "@/components/ui/Button";
+import { ThemedSelect } from "@/components/ui/Select";
 import { formValidationSchema } from "@/lib/validation";
 
 export const ConsultationForm = () => {
@@ -176,16 +177,15 @@ export const ConsultationForm = () => {
                     <label htmlFor="branch" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
                       Preferred Studio *
                     </label>
-                    <select
+                    <ThemedSelect
                       id="branch"
-                      name="branch"
                       value={formData.branch}
-                      onChange={handleChange}
-                      className="bg-zinc-950/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light cursor-pointer"
-                    >
-                      <option value="bangalore">Bangalore (Koramangala 5th Block)</option>
-                      <option value="mysore">Mysore (Gokulam 2nd Stage)</option>
-                    </select>
+                      onChange={(val) => setFormData((prev) => ({ ...prev, branch: val }))}
+                      options={[
+                        { value: "bangalore", label: "Bangalore (Koramangala 5th Block)" },
+                        { value: "mysore", label: "Mysore (Gokulam 2nd Stage)" },
+                      ]}
+                    />
                   </div>
 
                   {/* Service selection */}
@@ -193,18 +193,17 @@ export const ConsultationForm = () => {
                     <label htmlFor="service" className="text-[10px] tracking-widest text-zinc-500 uppercase font-semibold">
                       Select Service *
                     </label>
-                    <select
+                    <ThemedSelect
                       id="service"
-                      name="service"
                       value={formData.service}
-                      onChange={handleChange}
-                      className="bg-zinc-950/80 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]/20 transition-all font-light cursor-pointer"
-                    >
-                      <option value="tattoo">Custom Tattoo Art</option>
-                      <option value="piercing">Body Piercing</option>
-                      <option value="training">Academy Tattoo Training</option>
-                      <option value="other">Other / General Inquiry</option>
-                    </select>
+                      onChange={(val) => setFormData((prev) => ({ ...prev, service: val }))}
+                      options={[
+                        { value: "tattoo", label: "Custom Tattoo Art" },
+                        { value: "piercing", label: "Body Piercing" },
+                        { value: "training", label: "Academy Tattoo Training" },
+                        { value: "other", label: "Other / General Inquiry" },
+                      ]}
+                    />
                   </div>
                 </div>
 
