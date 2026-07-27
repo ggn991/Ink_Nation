@@ -189,7 +189,7 @@ export const ContactSection = () => {
                       className="w-full text-center py-2.5 bg-white text-black hover:bg-cyan-400 hover:text-black hover:border-cyan-400 border border-white rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 inline-flex items-center justify-center gap-1.5"
                     >
                       <Map className="w-3.5 h-3.5" />
-                      <span>View on Maps</span>
+                      <span>View Maps</span>
                     </a>
                     <a 
                       href="https://wa.me/918123713723"
@@ -206,7 +206,7 @@ export const ContactSection = () => {
                     className="w-full text-center py-2.5 bg-zinc-900 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap inline-flex items-center justify-center gap-1.5"
                   >
                     <Phone className="w-3.5 h-3.5" />
-                    <span>Call Studio: 08123713723</span>
+                    <span>Call Studio: 8123713723</span>
                   </a>
                 </div>
               </div>
@@ -290,7 +290,7 @@ export const ContactSection = () => {
                     className="w-full text-center py-2.5 bg-zinc-900 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 rounded-full text-[10px] tracking-widest uppercase font-semibold transition-all duration-300 whitespace-nowrap inline-flex items-center justify-center gap-1.5"
                   >
                     <Phone className="w-3.5 h-3.5" />
-                    <span>Call Studio: 08123713723</span>
+                    <span>Call Studio: 8123713723</span>
                   </a>
                 </div>
               </div>

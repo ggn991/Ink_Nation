@@ -117,7 +117,8 @@ export const DualBranch = () => {
                   >
                     <Button variant="primary" className="w-full text-xs px-2">
                       <Map className="w-4 h-4 shrink-0" />
-                      <span>Get Directions</span>
+                      <span className="hidden sm:inline">Get Directions</span>
+                      <span className="sm:hidden">Location</span>
                     </Button>
                   </a>
                   <a 
